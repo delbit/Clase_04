@@ -4,9 +4,8 @@
  * @date: 30/03/2021
  * @desafio: Clase 05
  * @resume: El siguiente script es un simulador de cuotas en el método francés, donde todas las cuotas son iguales.
- * Para este desafió, se parte de la base del desafió anterior realizando un completo ing para usar todo con Objetos, 
- * se mantienen alguna funciones de validaciones para asegurar que los método de la clase funcionen correctamente.
- * Se crearon los métodos GET y SET que se encargan de devolver los valores y asignar los nuevo de ser necesarios.
+ * Para este desafió, se parte de la base del desafió anterior, 
+ * aca se agrega el concepto de array, pidiéndole al usuario cuantas simulaciones de crédito quiere realizar.
  * */
 
 
@@ -113,43 +112,56 @@ function ingresoInteres() {
       return interes;
       break;
     }else {
-      alert("El deben estar comprendidos entre 1 y 250 %.")
+      alert("El numero ingresado debe estar comprendidos entre 1 y 250 %.")
     }
   }while (true);
     
 }
 
+// se modifica la funcion para que la salida de datos sea mas rapida.
 function mostrar(cuota) {
-  alert("La cuota de " + cuota.leerCapital + " a " + cuota.leerMeses + " meses y interés anual de " + cuota.leerInteres +  "% es de " + ((cuota.leerCuota).toFixed(2)));
+  console.log("La cuota de " + cuota.leerCapital + " a " + cuota.leerMeses + " meses y interés anual de " + cuota.leerInteres +  "% es de " + ((cuota.leerCuota).toFixed(2)));
 }
+
+//Se valida la cantidad se simulaciones que se usara para crear el Array
+function validarCant() {
+  do {
+    let cantidad = parseInt(prompt("Por favor ingrese la cantidad de simulaciones a realizar entre 1 y 10"));
+    if ((cantidad > 0) && (cantidad <= 10)) {
+      return cantidad;
+      break;
+    }else {
+      alert("El numero ingresado debe estar comprendidos entre 1 y 10.")
+    }
+  }while (true);
+  
+}
+
 // Funcion principal
 
 function  main(){
 
+  // Creando el array
+  const simulaciones = [];
+
   alert("El siguiente programa va a calcular las cuotas mensuales con el sistema de crédito Francés.");
-  // Creando los valores para el nuevo Objeto
-  let capital = ingresoCapital();
-  let meses = ingresoMeses();
-  let interes = ingresoInteres();
+  let cantidad = validarCant();
 
-  // Se crea el objeto del tipo Cuotas con los valores.
-  const cuota = new Cuotas(capital, meses, interes);
-  mostrar(cuota);
+  // Este for creara la cantidad de simulaciones solicitadas por el usuario.
+  for (let index = 0; index < cantidad; index++) {
+    // Solicitando los valores para el nuevo Objeto
+    let capital = ingresoCapital();
+    let meses = ingresoMeses();
+    let interes = ingresoInteres();
+    // Se crea un objeto del tipo Cuotas con los valores.
+    const cuota = new Cuotas(capital, meses, interes);
+    simulaciones.push(cuota); //se agregan los elementos al array
+  }
 
-  // Validando el metodo de cambiar capital
-  capital = ingresoCapital();
-  cuota.cambiarCapital = capital;
-  mostrar(cuota);
-
-  // Validando el metodo de cambiar meses
-  meses = ingresoMeses();
-  cuota.cambiarMeses = meses;
-  mostrar(cuota);
-  
-  // Validando el metodo de cambiar Interes
-  interes = ingresoInteres();
-  cuota.cambiarInteres = interes;
-  mostrar(cuota);
+  alert("Las simulaciones se visualizan por la consola")
+  for (let index = 0; index < simulaciones.length; index++) {
+    mostrar(simulaciones[index]);
+  }  
 
 }
 
