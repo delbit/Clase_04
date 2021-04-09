@@ -1,13 +1,15 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 30/03/2021
+ * @date: 09/04/2021
  * @desafio: Clase 05
  * @resume: El siguiente script es un simulador de cuotas en el método francés, donde todas las cuotas son iguales.
- * Para este desafió, se parte de la base del desafió anterior, 
- * aca se agrega el concepto de array, pidiéndole al usuario cuantas simulaciones de crédito quiere realizar.
+ * Para este desafió, Se realiza el ordenamiento de un array de simulaciones, como se quiere solo probar el ordenamiento
+ * se comento el ingreso de datos por promt y se crean valores estáticos.
+ * El ordenamiento o sort se realiza a petición del usuario por las propiedades mas relevantes del objeto Cuotas,
+ * Capital, Meses, Interés, Cuota.
+ * Se modifica la función mostrar para que sea mas consistente al manejo de array
  * */
-
 
 // Class
 class Cuotas {
@@ -71,7 +73,6 @@ class Cuotas {
   cuotaFunc() {
     this.cuota = (this.capital * this.interesMensual * this.factor / (this.factor - 1));
   }
-  
 }
 
 // Funciones
@@ -84,10 +85,9 @@ function ingresoCapital() {
       return capital;
       break;
     } else {
-      alert("El monto solicitado de ser mayor a cero.")
+      alert("El monto solicitado de ser mayor a cero.");
     }
   }while (true);
-    
 }
 
 //valida los Meses
@@ -98,10 +98,9 @@ function ingresoMeses() {
       return meses;
       break;
     }else {
-      alert("Los meses deben estar comprendidos entre 1 y 60 meses.")
+      alert("Los meses deben estar comprendidos entre 1 y 60 meses.");
     }
   }while (true);
-    
 }
 
 //valida el Interes
@@ -112,15 +111,18 @@ function ingresoInteres() {
       return interes;
       break;
     }else {
-      alert("El numero ingresado debe estar comprendidos entre 1 y 250 %.")
+      alert("El numero ingresado debe estar comprendidos entre 1 y 250 %.");
     }
   }while (true);
-    
 }
 
-// se modifica la funcion para que la salida de datos sea mas rapida.
-function mostrar(cuota) {
-  console.log("La cuota de " + cuota.leerCapital + " a " + cuota.leerMeses + " meses y interés anual de " + cuota.leerInteres +  "% es de " + ((cuota.leerCuota).toFixed(2)));
+// La función mostrar ahora tiene el capacidad de mostrar el array.
+function mostrar(simulaciones) {
+
+  for (let index = 0; index < simulaciones.length; index++) {
+    console.log("La cuota de " + simulaciones[index].leerCapital + " a " + simulaciones[index].leerMeses + " meses y interés anual de " + simulaciones[index].leerInteres +  "% es de " + ((simulaciones[index].leerCuota).toFixed(2)));
+  }
+  console.log("-----------------");
 }
 
 //Se valida la cantidad se simulaciones que se usara para crear el Array
@@ -131,10 +133,80 @@ function validarCant() {
       return cantidad;
       break;
     }else {
-      alert("El numero ingresado debe estar comprendidos entre 1 y 10.")
+      alert("El numero ingresado debe estar comprendidos entre 1 y 10.");
     }
   }while (true);
+}
+
+//Función de ordenamiento de array
+function ordenamiento(simulaciones) {
+  let ordenar;
+  do {
+    ordenar = prompt("Por que valor se realiza el Ordenamiento: [M]onto, Me[s], [I]nteres, [C]uotas");
+    ordenar = ordenar.toLowerCase();
+  }while (ordenar != "m" && ordenar != "i" && ordenar != "s" && ordenar != "c");
+
+  switch (ordenar) {
+    // caso de Monto o Capital
+    case "m":
+      simulaciones.sort(function (a, b) {
+        if (a.leerCapital > b.leerCapital) {
+          return 1;
+        }
+        if (a.leerCapital < b.leerCapital) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+      return simulaciones;
+      break;
+
+      //Caso para mes
+      case "s":
+      simulaciones.sort(function (a, b) {
+        if (a.leerMeses > b.leerMeses) {
+          return 1;
+        }
+        if (a.leerMeses < b.leerMeses) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+      return simulaciones;
+      break;
+
+      //Caso para Interes
+      case "i":
+      simulaciones.sort(function (a, b) {
+        if (a.leerInteres > b.leerInteres) {
+          return 1;
+        }
+        if (a.leerInteres < b.leerInteres) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+      return simulaciones;
+      break;
   
+      //Caso para cuota
+      case "c":
+      simulaciones.sort(function (a, b) {
+        if (a.leerCuota > b.leerCuota) {
+          return 1;
+        }
+        if (a.leerCuota < b.leerCuota) {
+          return -1;
+        }
+        // a must be equal to b
+        return 0;
+      });
+      return simulaciones;
+      break;
+  }
 }
 
 // Funcion principal
@@ -145,6 +217,9 @@ function  main(){
   const simulaciones = [];
 
   alert("El siguiente programa va a calcular las cuotas mensuales con el sistema de crédito Francés.");
+  
+  /* Omitiendo la entrada por usuario
+
   let cantidad = validarCant();
 
   // Este for creara la cantidad de simulaciones solicitadas por el usuario.
@@ -158,11 +233,25 @@ function  main(){
     simulaciones.push(cuota); //se agregan los elementos al array
   }
 
-  alert("Las simulaciones se visualizan por la consola")
-  for (let index = 0; index < simulaciones.length; index++) {
-    mostrar(simulaciones[index]);
-  }  
+*/
+  const cuota1 = new Cuotas(4000, 20, 7);
+  const cuota2 = new Cuotas(1400, 11, 18);
+  const cuota3 = new Cuotas(3000, 10, 9);
+  const cuota4 = new Cuotas(800, 2, 20);
+  simulaciones.push(cuota1);
+  simulaciones.push(cuota2);
+  simulaciones.push(cuota3);
+  simulaciones.push(cuota4);
+  alert("Las simulaciones se visualizan por la consola");
 
+  //Se muestra el array sin ordenar
+  mostrar(simulaciones);
+  
+  // se reemplazan los items del array por el array ordenado devuelto por ordenamiento.
+  simulaciones.splice(0, simulaciones.length, ...ordenamiento(simulaciones));
+
+  //Se muestra el array ordenado según el criterio del usuario.
+  mostrar(simulaciones);
 }
 
 // Inicio del programa
