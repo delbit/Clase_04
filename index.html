@@ -1,22 +1,51 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="Description" content="Enter your description here" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+    <title>Simulador de crédito</title>
   </head>
   <body>
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    
-    <script src="/js/app.js" async defer></script>
+    <div class="container-fluid">
+      <div class="row justify-content-md-center">
+        <h1><span class="badge badge-primary">Simulador de crédito francés</span></h1>
+      </div>
+      <br>
+      <br>
+      <p class="text-center">El siguiente programa es un simulador del crédito del modelo francés.</p>
+      <p class="text-center">Se van a solicitar ciertos parámetros al iniciar la simulación cuando se presione: <b>Simular Crédito.</b></p>
+      <p class="text-center">Se solicitan la cantidad de simulaciones para hacer.</p>
+      <p class="text-center">Solicitando en cada iteración el monto a solicitar, meses del crédito e interés anual.</p>
+      <p class="text-center">Se pueden ordenar los créditos si es mas de una simulación, presionando: <b>Ordenar Simulaciones de Crédito.</b></p>
+      <p class="text-center">Los resultados se visualizan por consola al presionar: <b>Mostrar Simulaciones.</b></p>
+      <br>
+      <br>
+      <div class="col text-center">
+        <button type="button" class="btn btn-success" onclick="simularCredito()">Simular Crédito</button>
+        <br>
+        <br>
+        <button type="button" class="btn btn-primary" onclick="ordenarCredito()">Ordenar Simulaciones de Crédito</button>
+        <br>
+        <br>
+        <button type="button" class="btn btn-warning" onclick="visualizarCredito()">Mostrar simulaciones</button>
+      </div>
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+    <script src="/js/cuotas_class.js" async false></script>
+    <script src="/js/logic.js" async false></script>
+    <script src="/js/app.js" async false></script>
   </body>
 </html>
