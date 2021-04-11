@@ -54,12 +54,21 @@ function validarCant() {
     let cantidad = parseInt(prompt("Por favor ingrese la cantidad de simulaciones a realizar entre 1 y 10"));
     if ((cantidad > 0) && (cantidad <= 10)) {
       return cantidad;
-      break;
     }else {
       alert("El numero ingresado debe estar comprendidos entre 1 y 10.");
     }
   } while (true);
 }
+
+function validarTipoOrden() {
+  let ordenar;
+  do {
+    ordenar = prompt("Ingrese por que criterio se debe ordenar: [M]onto, Me[s], [I]nteres, [C]uotas");
+    ordenar = ordenar.toLowerCase();
+  } while ((ordenar != "m") && (ordenar != "i") && (ordenar != "s") && (ordenar != "c"));
+  return ordenar;
+}
+
 
 // ***Funciones de Manipulación de datos***
 
@@ -78,73 +87,54 @@ function mostrar(simulaciones) {
 }
 
 //Función de ordenamiento de array
+
+function compararAscCapital(a, b) {
+  let resultado = a.leerCapital - b.leerCapital;
+  if (resultado == 0) { return 0; }
+  return((resultado > 0) ? 1 : -1);
+}
+
+function compararAscMeses(a, b) {
+  let resultado = a.leerMeses - b.leerMeses;
+  if (resultado == 0) { return 0; }
+  return((resultado > 0) ? 1 : -1);
+}
+
+function compararAscInteres(a, b) {
+  let resultado = a.leerInteres - b.leerInteres;
+  if (resultado == 0) { return 0; }
+  return((resultado > 0) ? 1 : -1);
+}
+
+function compararAscCuota(a, b) {
+  let resultado = a.leerCuota - b.leerCuota;
+  if (resultado == 0) { return 0; }
+  return((resultado > 0) ? 1 : -1);
+}
+
 function ordenamiento(simulaciones) {
-  let ordenar;
-  do {
-    ordenar = prompt("Por que valor se realizara el Ordenamiento: [M]onto, Me[s], [I]nteres, [C]uotas");
-    ordenar = ordenar.toLowerCase();
-  } while (ordenar != "m" && ordenar != "i" && ordenar != "s" && ordenar != "c");
+  let ordenar = validarTipoOrden();
 
   switch (ordenar) {
     // caso de Monto o Capital
     case "m":
-      simulaciones.sort(function (a, b) {
-        if (a.leerCapital > b.leerCapital) {
-          return 1;
-        }
-        if (a.leerCapital < b.leerCapital) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
+      simulaciones.sort(compararAscCapital);
       return simulaciones;
-      break;
 
       //Caso para mes
       case "s":
-      simulaciones.sort(function (a, b) {
-        if (a.leerMeses > b.leerMeses) {
-          return 1;
-        }
-        if (a.leerMeses < b.leerMeses) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
+      simulaciones.sort(compararAscMeses);
       return simulaciones;
-      break;
 
       //Caso para Interés
       case "i":
-      simulaciones.sort(function (a, b) {
-        if (a.leerInteres > b.leerInteres) {
-          return 1;
-        }
-        if (a.leerInteres < b.leerInteres) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
+      simulaciones.sort(compararAscInteres);
       return simulaciones;
-      break;
-  
+
       //Caso para cuota
       case "c":
-      simulaciones.sort(function (a, b) {
-        if (a.leerCuota > b.leerCuota) {
-          return 1;
-        }
-        if (a.leerCuota < b.leerCuota) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
+      simulaciones.sort(compararAscCuota);
       return simulaciones;
-      break;
   }
 }
 
