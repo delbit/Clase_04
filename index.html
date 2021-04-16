@@ -16,36 +16,67 @@
     <title>Simulador de crédito</title>
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container">
       <div class="row justify-content-md-center">
         <h1><span class="badge badge-primary">Simulador de crédito francés</span></h1>
       </div>
       <br>
       <br>
-      <p class="text-center">El siguiente programa es un simulador del crédito del modelo francés.</p>
-      <p class="text-center">Se van a solicitar ciertos parámetros al iniciar la simulación cuando se presione: <b>Simular Crédito.</b></p>
-      <p class="text-center">Se solicitan la cantidad de simulaciones para hacer.</p>
-      <p class="text-center">Solicitando en cada iteración el monto a solicitar, meses del crédito e interés anual.</p>
-      <p class="text-center">Se pueden ordenar los créditos si es mas de una simulación, presionando: <b>Ordenar Simulaciones de Crédito.</b></p>
-      <p class="text-center">Los resultados se visualizan por consola al presionar: <b>Mostrar Simulaciones.</b></p>
-      <br>
-      <br>
-      <div class="col text-center">
-        <button type="button" class="btn btn-success" onclick="simularCredito()">Simular Crédito</button>
-        <br>
-        <br>
-        <button type="button" class="btn btn-primary" onclick="ordenarCredito()">Ordenar Simulaciones de Crédito</button>
-        <br>
-        <br>
-        <button type="button" class="btn btn-warning" onclick="visualizarCredito()">Mostrar simulaciones</button>
+      <p class="text-center">El siguiente programa es un simulador de crédito del modelo francés.</p>
+      <p class="text-center">Los valores para el calculo se están escribiendo por JS</p>
+      <p class="text-center">Los resultados se visualizan en la tabla HTML.</b></p>
+    </div>
+
+    <div class="container mt-3">
+      <div class="row">
+        <div class="col-4">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">$</span>
+            </div>
+            <input type="text" class="form-control" id="capital" placeholder="Monto a Solicitar" aria-label="Monto" aria-describedby="basic-addon1">
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">%</span>
+            </div>
+            <input type="text" class="form-control" id="interes" placeholder="Interés Anual" aria-label="Interés" aria-describedby="basic-addon1">
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">#</span>
+            </div>
+            <input type="text" class="form-control" id="meses" placeholder="Cantidad de Cuotas" aria-label="Meses" aria-describedby="basic-addon1">
+          </div>
+        </div>
       </div>
 
+    <div class="container mt-3">
+      <div class="row">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col"># de Cuotas</th>
+              <th scope="col">Capital Solicitado</th>
+              <th scope="col">Interés Anual</th>
+              <th scope="col">Cuota Mensual</th>
+            </tr>
+          </thead>
+          <tbody id="table-datos">
+          </tbody>
+        </table>
+      </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
-    <script src="/js/cuotas_class.js" async false></script>
-    <script src="/js/logic.js" async false></script>
-    <script src="/js/app.js" async false></script>
+    <script src="/js/cuotas_class.js"></script>
+    <script src="/js/logic.js"></script>
+    <script src="/js/app.js"></script>
   </body>
 </html>

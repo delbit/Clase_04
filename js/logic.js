@@ -4,7 +4,11 @@
  * @date: 09/04/2021
  * @desafio: 1era entrega Proyecto
  * @resume: La lógica del programa de Simulación.
- * Aca se encuentran toda la lógica para que el programa funciones, metodos y funciones necesarias.
+ * Se comentan muchas funciones que solo servian para las desafion anteriores, no se eliminan del todo pasan a estar 
+ * en estado deprecated
+ * Se crearon las funciones necesarias para asignarle valores a los Input
+ * Se creo una función que toma los valores del Input y realiza los cálculos
+ * Se crea un función que visualizan los cálculos en el HTMl
  * */
 
 //***Funciones de Validaciones de entrada datos***
@@ -47,6 +51,11 @@ function ingresoInteres() {
     }
   } while (true);
 }
+
+/*
+************************************
+DEPRECATED Functions Inicio
+************************************
 
 //Se valida la cantidad se simulaciones que se usara para crear el Array
 function validarCant() {
@@ -138,6 +147,7 @@ function ordenamiento(simulaciones) {
   }
 }
 
+// function encargada de crear elemento en un array entrada manual
 function nuevasSimulaciones() {
   let cantidad = validarCant();
   let simulaciones = [];
@@ -152,4 +162,78 @@ function nuevasSimulaciones() {
     simulaciones.push(cuota); //se agregan los elementos al array
   }
   return simulaciones;
+}
+
+**************************
+Fin de function Deprecated
+**************************
+*/
+
+// Esta funcion va a calular el desglose de cada cuota, Interes pagado, capital, y cuota pura.
+function calculoDesglose(simulaciones) {
+  if (simulaciones.length != 0 ) {
+    // calculo de datos necesarios
+    let capitalPendiente = simulaciones[0].leerCapital;
+
+    for (let index = 0; index < simulaciones[0].leerMeses; index++) {
+
+      let cuotaMes = simulaciones[0].leerCuota;
+      let capitalTemp = capitalPendiente;
+      let interesMes = capitalTemp * simulaciones[0].leerInteresMensual;
+      let amortizado = simulaciones[0].leerCuota - interesMes;
+      capitalPendiente = capitalTemp - amortizado;
+
+      let padre = document.getElementById("table-datos");
+      let filaDesglose = document.createElement("tr");
+        //Definimos el innerHTML del elemento con una plantilla de texto
+        filaDesglose.innerHTML = 
+        ` <th scope="row">${index + 1}</th>
+        <td>${capitalTemp.toFixed(2)}</td>
+        <td>${amortizado.toFixed(2)}</td>
+        <td>${interesMes.toFixed(2)}</td>
+        <td>${cuotaMes.toFixed(2)}</td>`;
+        padre.appendChild(filaDesglose);
+    }
+  }
+}
+
+// Esta funcion se encarga de copiar los valores a los Input
+function asignandoValoresInput(capital, interes, meses) {
+  let capitalInput = document.getElementById("capital");
+  let interesInput = document.getElementById("interes");
+  let mesesInput = document.getElementById("meses");
+
+  capitalInput.value = capital;
+  interesInput.value = interes;
+  mesesInput.value = meses;
+}
+
+// Esta funcion crea un objeto con los datos de los input y devuelve el objeto creado
+function crearSimulacion() {
+  let capital = parseFloat(document.getElementById("capital").value);
+  let interes = parseFloat(document.getElementById("interes").value);
+  let meses = parseInt(document.getElementById("meses").value);
+  const simulacion = new Cuotas(capital, interes, meses);
+  return simulacion;
+}
+
+// Esta Funcion se encarga de Mostrar la informacion por HTML
+function visualizarSimulacion(simulacion) {
+  // Datos de la Simulacion del crédito
+  let meses = simulacion.leerMeses;
+  let capitalSolicitado = simulacion.leerCapital;
+  let interesAnual = simulacion.leerInteres;
+  let cuotaMesual = simulacion.leerCuota;
+
+  // Buscando el ID donde se van a colocar el nodo creando para mostrar
+  let padreTabla = document.getElementById("table-datos");
+  let filaDatos = document.createElement("tr");
+  // Definimos el innerHTML del elemento con una plantilla de texto
+  filaDatos.innerHTML = 
+  `
+  <th scope="row">${meses}</th>
+  <td>${capitalSolicitado.toFixed(2)}</td>
+  <td>${interesAnual.toFixed(2)}</td>
+  <td>${cuotaMesual.toFixed(2)}</td>`;
+  padreTabla.appendChild(filaDatos); // Se agrega al DOM
 }
