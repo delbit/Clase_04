@@ -4,7 +4,12 @@
  * @date: 09/04/2021
  * @desafio: 1era entrega Proyecto
  * @resume: La lógica del programa de Simulación.
- * Aca se encuentran toda la lógica para que el programa funciones, metodos y funciones necesarias.
+ * Se comentan muchas funciones que solo servían para las desafíos anteriores, no se eliminan del todo pasan a estar 
+ * en estado deprecated
+ * Se crearon las funciones necesarias para asignarle valores a los Input
+ * Se creo una función que toma los valores del Input y realiza los cálculos
+ * Se crea un función que visualizan los cálculos en el HTMl
+ * Se crean nuevas 
  * */
 
 //***Funciones de Validaciones de entrada datos***
@@ -48,18 +53,32 @@ function ingresoInteres() {
   } while (true);
 }
 
+/*
+************************************
+DEPRECATED Functions Inicio
+************************************
+
 //Se valida la cantidad se simulaciones que se usara para crear el Array
 function validarCant() {
   do {
     let cantidad = parseInt(prompt("Por favor ingrese la cantidad de simulaciones a realizar entre 1 y 10"));
     if ((cantidad > 0) && (cantidad <= 10)) {
       return cantidad;
-      break;
     }else {
       alert("El numero ingresado debe estar comprendidos entre 1 y 10.");
     }
   } while (true);
 }
+
+function validarTipoOrden() {
+  let ordenar;
+  do {
+    ordenar = prompt("Ingrese por que criterio se debe ordenar: [M]onto, Me[s], [I]nteres, [C]uotas");
+    ordenar = ordenar.toLowerCase();
+  } while ((ordenar != "m") && (ordenar != "i") && (ordenar != "s") && (ordenar != "c"));
+  return ordenar;
+}
+
 
 // ***Funciones de Manipulación de datos***
 
@@ -78,76 +97,58 @@ function mostrar(simulaciones) {
 }
 
 //Función de ordenamiento de array
+
+function compararAscCapital(a, b) {
+  let resultado = a.leerCapital - b.leerCapital;
+  if (resultado == 0) { return 0; }
+  return((resultado > 0) ? 1 : -1);
+}
+
+function compararAscMeses(a, b) {
+  let resultado = a.leerMeses - b.leerMeses;
+  if (resultado == 0) { return 0; }
+  return((resultado > 0) ? 1 : -1);
+}
+
+function compararAscInteres(a, b) {
+  let resultado = a.leerInteres - b.leerInteres;
+  if (resultado == 0) { return 0; }
+  return((resultado > 0) ? 1 : -1);
+}
+
+function compararAscCuota(a, b) {
+  let resultado = a.leerCuota - b.leerCuota;
+  if (resultado == 0) { return 0; }
+  return((resultado > 0) ? 1 : -1);
+}
+
 function ordenamiento(simulaciones) {
-  let ordenar;
-  do {
-    ordenar = prompt("Por que valor se realizara el Ordenamiento: [M]onto, Me[s], [I]nteres, [C]uotas");
-    ordenar = ordenar.toLowerCase();
-  } while (ordenar != "m" && ordenar != "i" && ordenar != "s" && ordenar != "c");
+  let ordenar = validarTipoOrden();
 
   switch (ordenar) {
     // caso de Monto o Capital
     case "m":
-      simulaciones.sort(function (a, b) {
-        if (a.leerCapital > b.leerCapital) {
-          return 1;
-        }
-        if (a.leerCapital < b.leerCapital) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
+      simulaciones.sort(compararAscCapital);
       return simulaciones;
-      break;
 
       //Caso para mes
       case "s":
-      simulaciones.sort(function (a, b) {
-        if (a.leerMeses > b.leerMeses) {
-          return 1;
-        }
-        if (a.leerMeses < b.leerMeses) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
+      simulaciones.sort(compararAscMeses);
       return simulaciones;
-      break;
 
       //Caso para Interés
       case "i":
-      simulaciones.sort(function (a, b) {
-        if (a.leerInteres > b.leerInteres) {
-          return 1;
-        }
-        if (a.leerInteres < b.leerInteres) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
+      simulaciones.sort(compararAscInteres);
       return simulaciones;
-      break;
-  
+
       //Caso para cuota
       case "c":
-      simulaciones.sort(function (a, b) {
-        if (a.leerCuota > b.leerCuota) {
-          return 1;
-        }
-        if (a.leerCuota < b.leerCuota) {
-          return -1;
-        }
-        // a must be equal to b
-        return 0;
-      });
+      simulaciones.sort(compararAscCuota);
       return simulaciones;
-      break;
   }
 }
 
+// function encargada de crear elemento en un array entrada manual
 function nuevasSimulaciones() {
   let cantidad = validarCant();
   let simulaciones = [];
@@ -162,4 +163,90 @@ function nuevasSimulaciones() {
     simulaciones.push(cuota); //se agregan los elementos al array
   }
   return simulaciones;
+}
+
+**************************
+Fin de function Deprecated
+**************************
+*/
+
+// Esta funcion va a calular el desglose de cada cuota, Interes pagado, capital, y cuota pura.
+function calculoDesglose(simulaciones) {
+  if (simulaciones.length != 0 ) {
+    // calculo de datos necesarios
+    let capitalPendiente = simulaciones[0].leerCapital;
+
+    for (let index = 0; index < simulaciones[0].leerMeses; index++) {
+
+      let cuotaMes = simulaciones[0].leerCuota;
+      let capitalTemp = capitalPendiente;
+      let interesMes = capitalTemp * simulaciones[0].leerInteresMensual;
+      let amortizado = simulaciones[0].leerCuota - interesMes;
+      capitalPendiente = capitalTemp - amortizado;
+
+      let padre = document.getElementById("table-datos");
+      let filaDesglose = document.createElement("tr");
+        //Definimos el innerHTML del elemento con una plantilla de texto
+        filaDesglose.innerHTML = 
+        ` <th scope="row">${index + 1}</th>
+        <td>${capitalTemp.toFixed(2)}</td>
+        <td>${amortizado.toFixed(2)}</td>
+        <td>${interesMes.toFixed(2)}</td>
+        <td>${cuotaMes.toFixed(2)}</td>`;
+        padre.appendChild(filaDesglose);
+    }
+  }
+}
+
+// Esta funcion se encarga limpiar los valores de los input y hacer foco en ingresar el capital
+// Se usa al inicio del programa y cuando se ejecuta el form
+function resetInput() {
+  let capitalInput = document.getElementById("capital");
+  let interesInput = document.getElementById("interes");
+  let mesesInput = document.getElementById("meses");
+
+  capitalInput.value = "";
+  interesInput.value = "";
+  mesesInput.value = "";
+  capitalInput.focus();
+}
+
+// Esta función crea un objeto con los datos de los input y devuelve el objeto creado
+function crearSimulacion() {
+  let capital = parseFloat(document.getElementById("capital").value);
+  let interes = parseFloat(document.getElementById("interes").value);
+  let meses = parseInt(document.getElementById("meses").value);
+  const simulacion = new Cuotas(capital, interes, meses);
+  return simulacion;
+}
+
+// Esta Función se encarga de Mostrar la informacion por HTML
+function visualizarSimulacion(simulacion) {
+  // Datos de la Simulacion del crédito
+  let meses = simulacion.leerMeses;
+  let capitalSolicitado = simulacion.leerCapital;
+  let interesAnual = simulacion.leerInteres;
+  let cuotaMesual = simulacion.leerCuota;
+
+  // Buscando el ID donde se van a colocar el nodo creando para mostrar
+  let padreTabla = document.getElementById("table-datos");
+  let filaDatos = document.createElement("tr");
+  // Definimos el innerHTML del elemento con una plantilla de texto
+  filaDatos.innerHTML = 
+  `
+  <th scope="row">${meses}</th>
+  <td>${capitalSolicitado.toFixed(2)}</td>
+  <td>${interesAnual.toFixed(2)}</td>
+  <td>${cuotaMesual.toFixed(2)}</td>`;
+  padreTabla.appendChild(filaDatos); // Se agrega al DOM
+}
+
+// Esta Función se encarga de eliminar los datos de la tabla al reiniciar
+function borrarDatosTabla() {
+  let padreTabla = document.getElementById("table-datos");
+
+  for (let index = (padreTabla.children.length - 1); index >= 0; index--) {
+    let child = padreTabla.children[index];
+    padreTabla.removeChild(child);
+  }
 }

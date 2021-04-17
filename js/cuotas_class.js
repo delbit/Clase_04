@@ -3,13 +3,14 @@
  * @author: David Eloy Lucena Rey
  * @date: 09/04/2021
  * @desafio: 1era entrega Proyecto
- * @resume: Separando las clase de toda la logica del programas.
- * Se crea la clase a usar el simulador de Credito  frances.
+ * @resume:
+ * clase a usar en el simulador de Crédito  francés.
+ * Se modifico el constructor para hacerlo consistente con el Orden de los Input del HTML
  * */
 
 // Class
 class Cuotas {
-  constructor(capital, meses, interes) {
+  constructor(capital, interes, meses) {
     this.capital = capital;
     this.meses = meses;
     this.interes = interes;
