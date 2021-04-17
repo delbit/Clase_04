@@ -4,11 +4,12 @@
  * @date: 09/04/2021
  * @desafio: 1era entrega Proyecto
  * @resume: La lógica del programa de Simulación.
- * Se comentan muchas funciones que solo servian para las desafion anteriores, no se eliminan del todo pasan a estar 
+ * Se comentan muchas funciones que solo servían para las desafíos anteriores, no se eliminan del todo pasan a estar 
  * en estado deprecated
  * Se crearon las funciones necesarias para asignarle valores a los Input
  * Se creo una función que toma los valores del Input y realiza los cálculos
  * Se crea un función que visualizan los cálculos en el HTMl
+ * Se crean nuevas 
  * */
 
 //***Funciones de Validaciones de entrada datos***
@@ -197,18 +198,20 @@ function calculoDesglose(simulaciones) {
   }
 }
 
-// Esta funcion se encarga de copiar los valores a los Input
-function asignandoValoresInput(capital, interes, meses) {
+// Esta funcion se encarga limpiar los valores de los input y hacer foco en ingresar el capital
+// Se usa al inicio del programa y cuando se ejecuta el form
+function resetInput() {
   let capitalInput = document.getElementById("capital");
   let interesInput = document.getElementById("interes");
   let mesesInput = document.getElementById("meses");
 
-  capitalInput.value = capital;
-  interesInput.value = interes;
-  mesesInput.value = meses;
+  capitalInput.value = "";
+  interesInput.value = "";
+  mesesInput.value = "";
+  capitalInput.focus();
 }
 
-// Esta funcion crea un objeto con los datos de los input y devuelve el objeto creado
+// Esta función crea un objeto con los datos de los input y devuelve el objeto creado
 function crearSimulacion() {
   let capital = parseFloat(document.getElementById("capital").value);
   let interes = parseFloat(document.getElementById("interes").value);
@@ -217,7 +220,7 @@ function crearSimulacion() {
   return simulacion;
 }
 
-// Esta Funcion se encarga de Mostrar la informacion por HTML
+// Esta Función se encarga de Mostrar la informacion por HTML
 function visualizarSimulacion(simulacion) {
   // Datos de la Simulacion del crédito
   let meses = simulacion.leerMeses;
@@ -236,4 +239,14 @@ function visualizarSimulacion(simulacion) {
   <td>${interesAnual.toFixed(2)}</td>
   <td>${cuotaMesual.toFixed(2)}</td>`;
   padreTabla.appendChild(filaDatos); // Se agrega al DOM
+}
+
+// Esta Función se encarga de eliminar los datos de la tabla al reiniciar
+function borrarDatosTabla() {
+  let padreTabla = document.getElementById("table-datos");
+
+  for (let index = (padreTabla.children.length - 1); index >= 0; index--) {
+    let child = padreTabla.children[index];
+    padreTabla.removeChild(child);
+  }
 }

@@ -27,33 +27,48 @@
       <p class="text-center">Los resultados se visualizan en la tabla HTML.</b></p>
     </div>
 
-    <div class="container mt-3">
-      <div class="row">
-        <div class="col-4">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">$</span>
+    <form id="form-simular">
+      <div class="container mt-3">
+        <div class="row">
+          <div class="col-4">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+              </div>
+              <input type="number" class="form-control" id="capital" placeholder="Monto a Solicitar" aria-label="Monto">
             </div>
-            <input type="text" class="form-control" id="capital" placeholder="Monto a Solicitar" aria-label="Monto" aria-describedby="basic-addon1">
+          </div>
+          <div class="col-4">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">%</span>
+              </div>
+              <input type="number" class="form-control" id="interes" placeholder="Interés Anual" aria-label="Interés">
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">#</span>
+              </div>
+              <input type="number" class="form-control" id="meses" placeholder="Cantidad de Cuotas" aria-label="Meses">
+            </div>
           </div>
         </div>
-        <div class="col-4">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">%</span>
-            </div>
-            <input type="text" class="form-control" id="interes" placeholder="Interés Anual" aria-label="Interés" aria-describedby="basic-addon1">
+        <div class="row text-center">
+          <div class="col"></div>
+          <div class="col-2 text-center">
+            <button type="summit" class="btn btn-success">Simular Crédito</button>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text">#</span>
-            </div>
-            <input type="text" class="form-control" id="meses" placeholder="Cantidad de Cuotas" aria-label="Meses" aria-describedby="basic-addon1">
+
+          <div class="col-2 text-center">
+            <button type="reset" class="btn btn-info">Reiniciar</button>
           </div>
+          <div class="col"></div>
         </div>
+        
       </div>
+    </form>
 
     <div class="container mt-3">
       <div class="row">
