@@ -9,7 +9,7 @@
  * Se crearon las funciones necesarias para asignarle valores a los Input
  * Se creo una función que toma los valores del Input y realiza los cálculos
  * Se crea un función que visualizan los cálculos en el HTMl
- * Se crean nuevas 
+ * Se crean nuevas en el cual se utiliza un array de objetos para mostrar nueva información
  * */
 
 //***Funciones de Validaciones de entrada datos***
@@ -171,30 +171,46 @@ Fin de function Deprecated
 */
 
 // Esta funcion va a calular el desglose de cada cuota, Interes pagado, capital, y cuota pura.
-function calculoDesglose(simulaciones) {
-  if (simulaciones.length != 0 ) {
-    // calculo de datos necesarios
-    let capitalPendiente = simulaciones[0].leerCapital;
 
-    for (let index = 0; index < simulaciones[0].leerMeses; index++) {
+function desgloseMensual(simulacion) {
+  let desgloseArray = [];
+  let capitalPendiente = simulacion.leerCapital;
+  let interesMensual = simulacion.leerInteresMensual;
+  let cuota = simulacion.leerCuota;
 
-      let cuotaMes = simulaciones[0].leerCuota;
-      let capitalTemp = capitalPendiente;
-      let interesMes = capitalTemp * simulaciones[0].leerInteresMensual;
-      let amortizado = simulaciones[0].leerCuota - interesMes;
-      capitalPendiente = capitalTemp - amortizado;
-
-      let padre = document.getElementById("table-datos");
-      let filaDesglose = document.createElement("tr");
-        //Definimos el innerHTML del elemento con una plantilla de texto
-        filaDesglose.innerHTML = 
-        ` <th scope="row">${index + 1}</th>
-        <td>${capitalTemp.toFixed(2)}</td>
-        <td>${amortizado.toFixed(2)}</td>
-        <td>${interesMes.toFixed(2)}</td>
-        <td>${cuotaMes.toFixed(2)}</td>`;
-        padre.appendChild(filaDesglose);
+  for (let index = 1; index <= simulacion.leerMeses; index++) {
+    let desgloseMes = {
+      capitalPendiente: "",
+      amortizado: "",
+      interesMes: "",
+      mes: "" 
     }
+    desgloseMes.capitalPendiente = capitalPendiente;
+    desgloseMes.interesMes = capitalPendiente * interesMensual;
+    desgloseMes.amortizado = cuota - desgloseMes.interesMes;
+    desgloseMes.mes = index;
+    capitalPendiente = capitalPendiente - desgloseMes.amortizado;
+    desgloseArray.push(desgloseMes);
+  }
+  return (desgloseArray);
+}
+
+function mostrarDesglose(simulacion) {
+  // calculo de datos necesarios
+  let desgloseArray = desgloseMensual(simulacion);
+
+  for (let index = 0; index < desgloseArray.length; index++) {
+    let padre = document.getElementById("table-datos");
+    let filaDesglose = document.createElement("tr");
+    //Definimos el innerHTML del elemento con una plantilla de texto
+    filaDesglose.innerHTML = 
+    `
+    <th scope="row">${desgloseArray[index].mes}</th>
+    <td>${desgloseArray[index].capitalPendiente.toFixed(2)}</td>
+    <td>${desgloseArray[index].amortizado.toFixed(2)}</td>
+    <td>${desgloseArray[index].interesMes.toFixed(2)}</td>
+    <td>${simulacion.leerCuota.toFixed(2)}</td>`;
+    padre.appendChild(filaDesglose);
   }
 }
 
@@ -204,7 +220,7 @@ function resetInput() {
   let capitalInput = document.getElementById("capital");
   let interesInput = document.getElementById("interes");
   let mesesInput = document.getElementById("meses");
-
+  // Limpia los Input
   capitalInput.value = "";
   interesInput.value = "";
   mesesInput.value = "";
@@ -226,7 +242,7 @@ function visualizarSimulacion(simulacion) {
   let meses = simulacion.leerMeses;
   let capitalSolicitado = simulacion.leerCapital;
   let interesAnual = simulacion.leerInteres;
-  let cuotaMesual = simulacion.leerCuota;
+  let cuotaMensual = simulacion.leerCuota;
 
   // Buscando el ID donde se van a colocar el nodo creando para mostrar
   let padreTabla = document.getElementById("table-datos");
@@ -237,7 +253,7 @@ function visualizarSimulacion(simulacion) {
   <th scope="row">${meses}</th>
   <td>${capitalSolicitado.toFixed(2)}</td>
   <td>${interesAnual.toFixed(2)}</td>
-  <td>${cuotaMesual.toFixed(2)}</td>`;
+  <td>${cuotaMensual.toFixed(2)}</td>`;
   padreTabla.appendChild(filaDatos); // Se agrega al DOM
 }
 

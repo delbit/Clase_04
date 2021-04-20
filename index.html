@@ -24,7 +24,7 @@
       <br>
       <p class="text-center">El siguiente programa es un simulador de crédito del modelo francés.</p>
       <p class="text-center">Los valores para el calculo se están escribiendo por JS</p>
-      <p class="text-center">Los resultados se visualizan en la tabla HTML.</b></p>
+      <p class="text-center">Los resultados se visualizan en la tabla HTML.</p>
     </div>
 
     <form id="form-simular">
@@ -57,16 +57,14 @@
         </div>
         <div class="row text-center">
           <div class="col"></div>
-          <div class="col-2 text-center">
-            <button type="summit" class="btn btn-success">Simular Crédito</button>
+          <div class="col-5 col-md-3 col-lg-3 text-center">
+            <button type="submit" class="btn btn-success">Simular Crédito</button>
           </div>
-
-          <div class="col-2 text-center">
+          <div class="col-5 col-md-3 col-lg-3 text-center">
             <button type="reset" class="btn btn-info">Reiniciar</button>
           </div>
           <div class="col"></div>
         </div>
-        
       </div>
     </form>
 
@@ -75,10 +73,11 @@
         <table class="table">
           <thead>
             <tr>
-              <th scope="col"># de Cuotas</th>
-              <th scope="col">Capital Solicitado</th>
-              <th scope="col">Interés Anual</th>
-              <th scope="col">Cuota Mensual</th>
+              <th scope="col"># de Cuota</th>
+              <th scope="col">Capital Pendiente</th>
+              <th scope="col">Capital Amortizado</th>
+              <th scope="col">Interés Mensual</th>
+              <th scope="col">Cuota</th>
             </tr>
           </thead>
           <tbody id="table-datos">
@@ -90,8 +89,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
-    <script src="/js/cuotas_class.js" async false></script>
-    <script src="/js/logic.js" async false></script>
-    <script src="/js/app.js" async false></script>
+    <script src="/js/cuotas_class.js"></script>
+    <script src="/js/logic.js"></script>
+    <script src="/js/app.js"></script>
   </body>
 </html>
