@@ -11,6 +11,8 @@
  * Se crea un función que visualizan los cálculos en el HTMl
  * Se crean nuevas en el cual se utiliza un array de objetos para mostrar nueva información
  * */
+// Import de la class
+import {Cuotas} from "./cuotas_class.js";
 
 //***Funciones de Validaciones de entrada datos***
 
@@ -266,3 +268,5 @@ function borrarDatosTabla() {
     padreTabla.removeChild(child);
   }
 }
+
+export {ingresoCapital, ingresoMeses, ingresoInteres, desgloseMensual, mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla};

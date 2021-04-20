@@ -8,7 +8,8 @@
  * Para este desafió se crearon los Listeners necesarios que controlan el calculo y el borrado de calculos.
  * En este desafió se llama a otra función que hace uso de un array.
  * */
-
+// Import de lo necesario
+import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla} from "./logic.js";
 // Funciones principales
 // Define los listener
 function listenerButton() {
@@ -36,5 +37,4 @@ function resetPage(e) {
   resetInput();
 }
 
-resetInput(); // Limpia el formulario en un Refresh
-listenerButton(); //activando el Listener del Formulario
+export {listenerButton, simularCredito, mostrarDetalle, resetPage}

@@ -9,7 +9,7 @@
  * */
 
 // Class
-class Cuotas {
+export class Cuotas {
   constructor(capital, interes, meses) {
     this.capital = capital;
     this.meses = meses;
