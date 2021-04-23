@@ -7,7 +7,8 @@
  * clase a usar en el simulador de Crédito  francés.
  * Se modifico el constructor para hacerlo consistente con el Orden de los Input del HTML
  * */
-
+// Import de la class
+import { Desglose } from "./desglose_class.js";
 // Class
 export class Cuotas {
   constructor(capital, interes, meses) {
@@ -18,6 +19,7 @@ export class Cuotas {
     this.factor;
     this.cuota;
     this.actualizarCuota();
+    this.desgloseCuotas = this.desgloseFrances();
   }
 
   // SET y GET para cambiar o mostrar los atributos de la clase
@@ -56,6 +58,10 @@ export class Cuotas {
     return this.cuota;
   }
 
+  get leerDesgloseCuotas() {
+    return this.desgloseCuotas;
+  }
+
   // Funciones propias para el calculo de la cuota
   actualizarCuota () {
     this.interesMensual = this.interes / 1200; // actualiza el interes mensual
@@ -69,5 +75,21 @@ export class Cuotas {
 
   cuotaFunc() {
     this.cuota = (this.capital * this.interesMensual * this.factor / (this.factor - 1));
+  }
+
+  desgloseFrances() {
+    let desgloseArray = [];
+    let capitalPendiente = this.capital;
+    let interesMensual = this.interesMensual;
+    let cuota = this.cuota;
+
+    for (let index = 1; index <= this.meses; index++) {
+      let interesMes = capitalPendiente * interesMensual;
+      let amortizado = cuota - interesMes;
+      const desgloseMes = new Desglose(capitalPendiente, amortizado,interesMes,index)
+      capitalPendiente -= amortizado;
+      desgloseArray.push(desgloseMes);
+    }
+    return (desgloseArray);
   }
 }

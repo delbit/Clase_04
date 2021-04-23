@@ -13,6 +13,7 @@
  * */
 // Import de la class
 import {Cuotas} from "./cuotas_class.js";
+import { Desglose } from "./desglose_class.js";
 
 //***Funciones de Validaciones de entrada datos***
 
@@ -167,13 +168,6 @@ function nuevasSimulaciones() {
   return simulaciones;
 }
 
-**************************
-Fin de function Deprecated
-**************************
-*/
-
-// Esta funcion va a calular el desglose de cada cuota, Interes pagado, capital, y cuota pura.
-
 function desgloseMensual(simulacion) {
   let desgloseArray = [];
   let capitalPendiente = simulacion.leerCapital;
@@ -181,36 +175,35 @@ function desgloseMensual(simulacion) {
   let cuota = simulacion.leerCuota;
 
   for (let index = 1; index <= simulacion.leerMeses; index++) {
-    let desgloseMes = {
-      capitalPendiente: "",
-      amortizado: "",
-      interesMes: "",
-      mes: "" 
-    }
-    desgloseMes.capitalPendiente = capitalPendiente;
-    desgloseMes.interesMes = capitalPendiente * interesMensual;
-    desgloseMes.amortizado = cuota - desgloseMes.interesMes;
-    desgloseMes.mes = index;
-    capitalPendiente = capitalPendiente - desgloseMes.amortizado;
+    let interesMes = capitalPendiente * interesMensual;
+    let amortizado = cuota - interesMes;
+    const desgloseMes = new Desglose(capitalPendiente, amortizado,interesMes,index)
+    capitalPendiente -= amortizado;
     desgloseArray.push(desgloseMes);
   }
   return (desgloseArray);
 }
+**************************
+Fin de function Deprecated
+**************************
+*/
 
+// Esta funcion va a mostrar el desglose de la cuota mes a mes, Interes pagado, capital, y cuota pura.
 function mostrarDesglose(simulacion) {
-  // calculo de datos necesarios
-  let desgloseArray = desgloseMensual(simulacion);
+  // Recuperando el Arreglo del desglose de las cuotas
+  let desgloseCuotasArray = simulacion.leerDesgloseCuotas;
 
-  for (let index = 0; index < desgloseArray.length; index++) {
+  for (const desgloseCuota of desgloseCuotasArray) {
     let padre = document.getElementById("table-datos");
     let filaDesglose = document.createElement("tr");
+
     //Definimos el innerHTML del elemento con una plantilla de texto
     filaDesglose.innerHTML = 
     `
-    <th scope="row">${desgloseArray[index].mes}</th>
-    <td>${desgloseArray[index].capitalPendiente.toFixed(2)}</td>
-    <td>${desgloseArray[index].amortizado.toFixed(2)}</td>
-    <td>${desgloseArray[index].interesMes.toFixed(2)}</td>
+    <th scope="row">${desgloseCuota.leerMes}</th>
+    <td>${desgloseCuota.leerCapitalPendiente.toFixed(2)}</td>
+    <td>${desgloseCuota.leerAmortizado.toFixed(2)}</td>
+    <td>${desgloseCuota.leerInteresMes.toFixed(2)}</td>
     <td>${simulacion.leerCuota.toFixed(2)}</td>`;
     padre.appendChild(filaDesglose);
   }
@@ -269,4 +262,4 @@ function borrarDatosTabla() {
   }
 }
 
-export {ingresoCapital, ingresoMeses, ingresoInteres, desgloseMensual, mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla};
+export {ingresoCapital, ingresoMeses, ingresoInteres, mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla};
