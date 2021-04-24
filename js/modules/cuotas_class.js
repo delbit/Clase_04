@@ -1,11 +1,13 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 09/04/2021
- * @desafio: 1era entrega Proyecto
+ * @date: 22/04/2021
+ * @desafió: 2da entrega Proyecto
  * @resume:
- * clase a usar en el simulador de Crédito  francés.
+ * Clase a usar en el simulador de Crédito  francés.
  * Se modifico el constructor para hacerlo consistente con el Orden de los Input del HTML
+ * Se adiciona una nueva propiedad a la clase para tener el detalle de cada cuota mensual.
+ * Para esa propiedad se crea la función necesaria que realiza los cálculos necesarios del sistema francés
  * */
 // Import de la class
 import { Desglose } from "./desglose_class.js";
@@ -26,16 +28,19 @@ export class Cuotas {
   set cambiarCapital(nuevoCapital){
     this.capital = nuevoCapital;
     this.actualizarCuota();
+    this.desgloseCuotas = this.desgloseFrances();
   }
 
   set cambiarMeses(nuevoMeses){
     this.meses = nuevoMeses;
     this.actualizarCuota();
+    this.desgloseCuotas = this.desgloseFrances();
   }
 
   set cambiarInteres(nuevoInteres){
     this.interes = nuevoInteres;
     this.actualizarCuota();
+    this.desgloseCuotas = this.desgloseFrances();
   }
 
   get leerCapital(){
@@ -77,6 +82,7 @@ export class Cuotas {
     this.cuota = (this.capital * this.interesMensual * this.factor / (this.factor - 1));
   }
 
+  // Realiza el calculo de cada una de las cuotas del Sistema Frances.
   desgloseFrances() {
     let desgloseArray = [];
     let capitalPendiente = this.capital;

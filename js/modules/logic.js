@@ -1,16 +1,15 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 09/04/2021
- * @desafio: 1era entrega Proyecto
+ * @date: 22/04/2021
+ * @desafió: 2da entrega Proyecto
  * @resume: La lógica del programa de Simulación.
- * Se comentan muchas funciones que solo servían para las desafíos anteriores, no se eliminan del todo pasan a estar 
- * en estado deprecated
+ * Se eliminaron las funciones innecesarias
  * Se crearon las funciones necesarias para asignarle valores a los Input
  * Se creo una función que toma los valores del Input y realiza los cálculos
- * Se crea un función que visualizan los cálculos en el HTMl
- * Se crean nuevas en el cual se utiliza un array de objetos para mostrar nueva información
+ * Se crea un función que visualizan los cálculos en el HTMl, se definen 2 métodos diferentes el de detalle y el de cuota.
  * */
+
 // Import de la class
 import {Cuotas} from "./cuotas_class.js";
 import { Desglose } from "./desglose_class.js";
@@ -56,142 +55,26 @@ function ingresoInteres() {
   } while (true);
 }
 
-/*
-************************************
-DEPRECATED Functions Inicio
-************************************
-
-//Se valida la cantidad se simulaciones que se usara para crear el Array
-function validarCant() {
-  do {
-    let cantidad = parseInt(prompt("Por favor ingrese la cantidad de simulaciones a realizar entre 1 y 10"));
-    if ((cantidad > 0) && (cantidad <= 10)) {
-      return cantidad;
-    }else {
-      alert("El numero ingresado debe estar comprendidos entre 1 y 10.");
-    }
-  } while (true);
+// Esta función va a mostrar el encabezado de la tabla para desglose o detalle.
+function domHeaderDesglose() {
+  // Buscando el ID donde se van a colocar el encabezado de la tabla simulacion
+  let padreTabla = document.getElementById("table-header");
+  let filaDatos = document.createElement("tr");
+  filaDatos.innerHTML = 
+  `
+  <th scope="col"># de Cuota</th>
+  <th scope="col">Capital Pendiente</th>
+  <th scope="col">Capital Amortizado</th>
+  <th scope="col">Interés Mensual</th>
+  <th scope="col">Cuota</th>`;
+  padreTabla.appendChild(filaDatos); // Se agrega al DOM
 }
 
-function validarTipoOrden() {
-  let ordenar;
-  do {
-    ordenar = prompt("Ingrese por que criterio se debe ordenar: [M]onto, Me[s], [I]nteres, [C]uotas");
-    ordenar = ordenar.toLowerCase();
-  } while ((ordenar != "m") && (ordenar != "i") && (ordenar != "s") && (ordenar != "c"));
-  return ordenar;
-}
-
-
-// ***Funciones de Manipulación de datos***
-
-// La función mostrar con la capacidad de mostrar el array.
-function mostrar(simulaciones) {
-  if (simulaciones.length > 0) {
-
-    for (let index = 0; index < simulaciones.length; index++) {
-      console.log("Para el monto de " + simulaciones[index].leerCapital + " a " + simulaciones[index].leerMeses + " meses y un interés anual de " + simulaciones[index].leerInteres +  "% la cuota mensual es de: " + ((simulaciones[index].leerCuota).toFixed(2)));
-    }
-    console.log("-----------------");
-
-  } else {
-    console.log("No existen datos para mostrar");
-  }
-}
-
-//Función de ordenamiento de array
-
-function compararAscCapital(a, b) {
-  let resultado = a.leerCapital - b.leerCapital;
-  if (resultado == 0) { return 0; }
-  return((resultado > 0) ? 1 : -1);
-}
-
-function compararAscMeses(a, b) {
-  let resultado = a.leerMeses - b.leerMeses;
-  if (resultado == 0) { return 0; }
-  return((resultado > 0) ? 1 : -1);
-}
-
-function compararAscInteres(a, b) {
-  let resultado = a.leerInteres - b.leerInteres;
-  if (resultado == 0) { return 0; }
-  return((resultado > 0) ? 1 : -1);
-}
-
-function compararAscCuota(a, b) {
-  let resultado = a.leerCuota - b.leerCuota;
-  if (resultado == 0) { return 0; }
-  return((resultado > 0) ? 1 : -1);
-}
-
-function ordenamiento(simulaciones) {
-  let ordenar = validarTipoOrden();
-
-  switch (ordenar) {
-    // caso de Monto o Capital
-    case "m":
-      simulaciones.sort(compararAscCapital);
-      return simulaciones;
-
-      //Caso para mes
-      case "s":
-      simulaciones.sort(compararAscMeses);
-      return simulaciones;
-
-      //Caso para Interés
-      case "i":
-      simulaciones.sort(compararAscInteres);
-      return simulaciones;
-
-      //Caso para cuota
-      case "c":
-      simulaciones.sort(compararAscCuota);
-      return simulaciones;
-  }
-}
-
-// function encargada de crear elemento en un array entrada manual
-function nuevasSimulaciones() {
-  let cantidad = validarCant();
-  let simulaciones = [];
-  // Este for creara la cantidad de simulaciones solicitadas por el usuario.
-  for (let index = 0; index < cantidad; index++) {
-    // Solicitando los valores para el nuevo Objeto
-    let capital = ingresoCapital();
-    let meses = ingresoMeses();
-    let interes = ingresoInteres();
-    // Se crea un objeto del tipo Cuotas con los valores.
-    const cuota = new Cuotas(capital, meses, interes);
-    simulaciones.push(cuota); //se agregan los elementos al array
-  }
-  return simulaciones;
-}
-
-function desgloseMensual(simulacion) {
-  let desgloseArray = [];
-  let capitalPendiente = simulacion.leerCapital;
-  let interesMensual = simulacion.leerInteresMensual;
-  let cuota = simulacion.leerCuota;
-
-  for (let index = 1; index <= simulacion.leerMeses; index++) {
-    let interesMes = capitalPendiente * interesMensual;
-    let amortizado = cuota - interesMes;
-    const desgloseMes = new Desglose(capitalPendiente, amortizado,interesMes,index)
-    capitalPendiente -= amortizado;
-    desgloseArray.push(desgloseMes);
-  }
-  return (desgloseArray);
-}
-**************************
-Fin de function Deprecated
-**************************
-*/
-
-// Esta funcion va a mostrar el desglose de la cuota mes a mes, Interes pagado, capital, y cuota pura.
+// Esta función va a mostrar el desglose de la cuota mes a mes, Interes pagado, capital, y cuota pura.
 function mostrarDesglose(simulacion) {
   // Recuperando el Arreglo del desglose de las cuotas
   let desgloseCuotasArray = simulacion.leerDesgloseCuotas;
+  domHeaderDesglose(); // Mostrando el Header de la Table para Desglose
 
   for (const desgloseCuota of desgloseCuotasArray) {
     let padre = document.getElementById("table-datos");
@@ -232,8 +115,21 @@ function crearSimulacion() {
 }
 
 // Esta Función se encarga de Mostrar la informacion por HTML
+function domHeaderSimulacion() {
+  // Buscando el ID donde se van a colocar el encabezado de la tabla simulacion
+  let padreTabla = document.getElementById("table-header");
+  let filaDatos = document.createElement("tr");
+  filaDatos.innerHTML = 
+  `
+  <th scope="col"># de Cuotas</th>
+  <th scope="col">Capital Solicitado</th>
+  <th scope="col">Interés Anual</th>
+  <th scope="col">Cuota Promedio</th>`;
+  padreTabla.appendChild(filaDatos); // Se agrega al DOM
+}
+
 function visualizarSimulacion(simulacion) {
-  // Datos de la Simulacion del crédito
+  domHeaderSimulacion(); // Mostrando el Header de la Table para simulacion
   let meses = simulacion.leerMeses;
   let capitalSolicitado = simulacion.leerCapital;
   let interesAnual = simulacion.leerInteres;
@@ -254,10 +150,16 @@ function visualizarSimulacion(simulacion) {
 
 // Esta Función se encarga de eliminar los datos de la tabla al reiniciar
 function borrarDatosTabla() {
+  // Se consulta si existen datos en la tabla, consultando si tabla-datos contiene algún hijo
   let padreTabla = document.getElementById("table-datos");
-
-  for (let index = (padreTabla.children.length - 1); index >= 0; index--) {
-    let child = padreTabla.children[index];
+  if (padreTabla.children.length != 0) {
+    // Eliminando los datos de la tabla
+    for (let index = (padreTabla.children.length - 1); index >= 0; index--) {
+      let child = padreTabla.children[index];
+      padreTabla.removeChild(child);
+    }
+    padreTabla = document.getElementById("table-header");
+    let child = padreTabla.children[0]; // es fijo debido a que siempre es el primer hijo el encabezado
     padreTabla.removeChild(child);
   }
 }

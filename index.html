@@ -18,13 +18,13 @@
   <body>
     <div class="container">
       <div class="row justify-content-md-center">
-        <h1><span class="badge badge-primary">Simulador de crédito francés</span></h1>
+        <h1><span class="badge badge-primary">Simulador de crédito sistema francés</span></h1>
       </div>
       <br>
       <br>
-      <p class="text-center">El siguiente programa es un simulador de crédito del modelo francés.</p>
-      <p class="text-center">Los valores para el calculo se están escribiendo por JS</p>
-      <p class="text-center">Los resultados se visualizan en la tabla HTML.</p>
+      <p class="text-center">El siguiente programa es un simulador de crédito del sistema francés.</p>
+      <p class="text-center">Ingrese los valores necesarios y presione Simular Crédito para obtener una vista rapida del credito</p>
+      <p class="text-center">Presionando Mostrar Detalle puede obtener una vista en detalle de cada cuota.</p>
     </div>
 
     <form id="form-simular">
@@ -56,14 +56,17 @@
           </div>
         </div>
         <div class="row text-center">
-          <div class="col"></div>
-          <div class="col-5 col-md-3 col-lg-3 text-center">
+          <div class="col-md"></div>
+          <div class="col-4 col-md-3 col-lg-2 text-center">
             <button type="submit" class="btn btn-success">Simular Crédito</button>
           </div>
-          <div class="col-5 col-md-3 col-lg-3 text-center">
-            <button type="reset" class="btn btn-info">Reiniciar</button>
+          <div class="col-4 col-md-3 col-lg-2 text-center">
+            <button type="button" id="detalle" class="btn btn-primary">Mostrar Detalle</button>
           </div>
-          <div class="col"></div>
+          <div class="col-4 col-md-3 col-lg-2 text-center">
+            <button type="reset" class="btn btn-info">Limpiar Datos</button>
+          </div>
+          <div class="col-md"></div>
         </div>
       </div>
     </form>
@@ -71,14 +74,7 @@
     <div class="container mt-3">
       <div class="row">
         <table class="table">
-          <thead>
-            <tr>
-              <th scope="col"># de Cuota</th>
-              <th scope="col">Capital Pendiente</th>
-              <th scope="col">Capital Amortizado</th>
-              <th scope="col">Interés Mensual</th>
-              <th scope="col">Cuota</th>
-            </tr>
+          <thead id="table-header">
           </thead>
           <tbody id="table-datos">
           </tbody>
