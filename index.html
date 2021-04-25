@@ -7,6 +7,10 @@
     <meta name="Description" content="Enter your description here" />
     <link
       rel="stylesheet"
+      href="/Clase_04/css/style.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
     />
     <link
@@ -18,13 +22,13 @@
   <body>
     <div class="container">
       <div class="row justify-content-md-center">
-        <h1><span class="badge badge-primary">Simulador de crédito francés</span></h1>
+        <h1><span class="badge badge-primary">Simulador de crédito sistema francés</span></h1>
       </div>
       <br>
       <br>
-      <p class="text-center">El siguiente programa es un simulador de crédito del modelo francés.</p>
-      <p class="text-center">Los valores para el calculo se están escribiendo por JS</p>
-      <p class="text-center">Los resultados se visualizan en la tabla HTML.</b></p>
+      <p class="text-center">El siguiente programa es un simulador de crédito del sistema francés.</p>
+      <p class="text-center">Ingrese los valores necesarios y presione Simular Crédito para obtener una vista rapida del credito</p>
+      <p class="text-center">Presionando Mostrar Detalle puede obtener una vista en detalle de cada cuota.</p>
     </div>
 
     <form id="form-simular">
@@ -36,6 +40,7 @@
                 <span class="input-group-text">$</span>
               </div>
               <input type="number" class="form-control" id="capital" placeholder="Monto a Solicitar" aria-label="Monto">
+              <div class="help-bagde w-100"></div>
             </div>
           </div>
           <div class="col-4">
@@ -44,6 +49,7 @@
                 <span class="input-group-text">%</span>
               </div>
               <input type="number" class="form-control" id="interes" placeholder="Interés Anual" aria-label="Interés">
+              <div class="help-bagde w-100"></div>
             </div>
           </div>
           <div class="col-4">
@@ -52,34 +58,30 @@
                 <span class="input-group-text">#</span>
               </div>
               <input type="number" class="form-control" id="meses" placeholder="Cantidad de Cuotas" aria-label="Meses">
+              <div class="help-bagde w-100"></div>
             </div>
           </div>
         </div>
         <div class="row text-center">
-          <div class="col"></div>
-          <div class="col-2 text-center">
-            <button type="summit" class="btn btn-success">Simular Crédito</button>
+          <div class="col-md"></div>
+          <div class="col-4 col-md-3 col-lg-2 text-center">
+            <button type="submit" class="btn btn-success">Simular Crédito</button>
           </div>
-
-          <div class="col-2 text-center">
-            <button type="reset" class="btn btn-info">Reiniciar</button>
+          <div class="col-4 col-md-3 col-lg-2 text-center">
+            <button type="button" id="detalle" class="btn btn-primary">Mostrar Detalle</button>
           </div>
-          <div class="col"></div>
+          <div class="col-4 col-md-3 col-lg-2 text-center">
+            <button type="reset" class="btn btn-info">Limpiar Datos</button>
+          </div>
+          <div class="col-md"></div>
         </div>
-        
       </div>
     </form>
 
     <div class="container mt-3">
       <div class="row">
         <table class="table">
-          <thead>
-            <tr>
-              <th scope="col"># de Cuotas</th>
-              <th scope="col">Capital Solicitado</th>
-              <th scope="col">Interés Anual</th>
-              <th scope="col">Cuota Mensual</th>
-            </tr>
+          <thead id="table-header">
           </thead>
           <tbody id="table-datos">
           </tbody>
@@ -90,8 +92,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
-    <script src="/Clase_04/js/cuotas_class.js"></script>
-    <script src="/Clase_04/js/logic.js"></script>
-    <script src="/Clase_04/js/app.js"></script>
+    <script type="module" src="/Clase_04/js/main.js"></script>
   </body>
 </html>
