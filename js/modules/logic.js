@@ -8,51 +8,83 @@
  * Se crearon las funciones necesarias para asignarle valores a los Input
  * Se creo una función que toma los valores del Input y realiza los cálculos
  * Se crea un función que visualizan los cálculos en el HTMl, se definen 2 métodos diferentes el de detalle y el de cuota.
+ * Se crean las funciones de validaciones de necesarias para que el usuario no pueda ingresar valores incorrectos.
  * */
 
 // Import de la class
 import {Cuotas} from "./cuotas_class.js";
-import { Desglose } from "./desglose_class.js";
 
 //***Funciones de Validaciones de entrada datos***
 
-//valida el capital
-function ingresoCapital() {
-  do {
-    let capital = parseInt(prompt("Por favor ingresa el monto a solicitar"));
-    if (capital > 0) {
-      return capital;
-      break;
-    } else {
-      alert("El monto solicitado de ser mayor a cero.");
-    }
-  } while (true);
+// Valida el valor del Input,
+// Se verifican tres condiciones y cada una sirve para, -1 el numero es un NaN / 0 numero negativo / 1 correcto
+function validarInput(objInput,errorText) {
+  let valueInput = parseFloat(objInput.value);
+
+  if (isNaN(valueInput)) {
+    markError(objInput, errorText, -1);
+  } else if (valueInput < 1){
+    markError(objInput, errorText, 0);
+  } else {
+    return 1; // valor es correcto
+  }
 }
 
-//valida los Meses
-function ingresoMeses() {
-  do {
-    let meses = parseInt(prompt("Por favor ingrese el plazo en meses entre 1 y 60 meses"));
-    if ((meses > 0) && (meses <= 60)) {
-      return meses;
-      break;
-    }else {
-      alert("Los meses deben estar comprendidos entre 1 y 60 meses.");
-    }
-  } while (true);
+// El Array de inputs es en el orden Capital, Interés, meses.
+function getInputs() {
+  const inputs = [
+    document.getElementById("capital"),
+    document.getElementById("interes"),
+    document.getElementById("meses")
+  ];
+  return inputs;
 }
 
-//valida el Interes
-function ingresoInteres() {
-  do {
-    let interes = parseInt(prompt("Por favor ingrese el interés anual debe estar entre 1 y 250"));
-    if ((interes > 0) && (interes <= 250)) {
-      return interes;
-      break;
-    } else {
-      alert("El numero ingresado debe estar comprendidos entre 1 y 250 %.");
+// Escribir función que marque el error.
+function markError(objInput, errorText, checker) {
+  let padreInput = objInput.parentElement;
+  let objIcon = (padreInput.firstElementChild.firstElementChild);
+  let objHelpBagde = padreInput.lastElementChild;
+  objIcon.classList.add("error"); // agrega la class error al Icon del input
+  // Agrega el texto correspondiente al error ocurrido.
+  if (checker == -1) {
+    objHelpBagde.innerHTML =`Debe ingresar un ${errorText} válido`;
+  }else {
+    objHelpBagde.innerHTML =`Debe ingresar un ${errorText} mayor a 0`;
+  }
+}
+
+function markErrorRemove() {
+  const inputs = getInputs();
+
+  for (const input of inputs) {
+    let padreInput = input.parentElement;
+    let objIcon = (padreInput.firstElementChild.firstElementChild); // Es el elemento que contiene el Icon del input
+    let objHelpBagde = padreInput.lastElementChild;
+    if (objHelpBagde.innerHTML != "") {
+      objIcon.classList.remove("error");
+      objHelpBagde.innerHTML = "";
     }
-  } while (true);
+  }
+}
+
+// esta funcion se encarga de verificar todos los Inputs del formulario
+function validarInputs() {
+  let check = true;
+  const inputs = getInputs(); // El array devuelto es Capital, Interés, Meses, el errorText sigue ese orden
+  const errorTexts = [
+    "<b>monto a solicitar</b>",
+    "<b>interés anual</b>",
+    "<b>número de cuotas</b>"
+  ];
+  // Validando cada Input
+  for (let index = 0; index < inputs.length; index++) {
+    if (validarInput(inputs[index],errorTexts[index]) != true){
+      check = false;
+    }
+  }
+  // Regresando validación, Si alguna Input es invalido se retorna una false. 
+  return check;
 }
 
 // Esta función va a mostrar el encabezado de la tabla para desglose o detalle.
@@ -92,26 +124,26 @@ function mostrarDesglose(simulacion) {
   }
 }
 
-// Esta funcion se encarga limpiar los valores de los input y hacer foco en ingresar el capital
+// Esta función se encarga limpiar los valores de los input y hacer foco en el primer input
 // Se usa al inicio del programa y cuando se ejecuta el form
 function resetInput() {
-  let capitalInput = document.getElementById("capital");
-  let interesInput = document.getElementById("interes");
-  let mesesInput = document.getElementById("meses");
+  const inputs = getInputs();
   // Limpia los Input
-  capitalInput.value = "";
-  interesInput.value = "";
-  mesesInput.value = "";
-  capitalInput.focus();
+  for (const input of inputs) {
+    input.value = "";
+  }
+  inputs[0].focus(); // foco siempre al primer input
 }
 
-// Esta función crea un objeto con los datos de los input y devuelve el objeto creado
+// Esta función crea un objeto con los datos de los input y devuelve el objeto creado, si los Input son correctos.
 function crearSimulacion() {
-  let capital = parseFloat(document.getElementById("capital").value);
-  let interes = parseFloat(document.getElementById("interes").value);
-  let meses = parseInt(document.getElementById("meses").value);
-  const simulacion = new Cuotas(capital, interes, meses);
-  return simulacion;
+  if (validarInputs()) {
+    let capital = parseFloat(document.getElementById("capital").value);
+    let interes = parseFloat(document.getElementById("interes").value);
+    let meses = parseInt(document.getElementById("meses").value);
+    const simulacion = new Cuotas(capital, interes, meses);
+    return simulacion;
+  }
 }
 
 // Esta Función se encarga de Mostrar la informacion por HTML
@@ -150,6 +182,8 @@ function visualizarSimulacion(simulacion) {
 
 // Esta Función se encarga de eliminar los datos de la tabla al reiniciar
 function borrarDatosTabla() {
+  // Verificando y removiendo los errores de los Inputs.
+  markErrorRemove();
   // Se consulta si existen datos en la tabla, consultando si tabla-datos contiene algún hijo
   let padreTabla = document.getElementById("table-datos");
   if (padreTabla.children.length != 0) {
@@ -164,4 +198,4 @@ function borrarDatosTabla() {
   }
 }
 
-export {ingresoCapital, ingresoMeses, ingresoInteres, mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla};
+export { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla};
