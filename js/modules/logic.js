@@ -19,7 +19,7 @@ import {Cuotas} from "./cuotas_class.js";
 // Valida el valor del Input,
 // Se verifican tres condiciones y cada una sirve para, -1 el numero es un NaN / 0 numero negativo / 1 correcto
 function validarInput(objInput,errorText) {
-  let valueInput = parseFloat(objInput.value);
+  let valueInput = parseFloat(objInput.val());
 
   if (isNaN(valueInput)) {
     markError(objInput, errorText, -1);
@@ -33,24 +33,26 @@ function validarInput(objInput,errorText) {
 // El Array de inputs es en el orden Capital, Interés, meses.
 function getInputs() {
   const inputs = [
-    document.getElementById("capital"),
-    document.getElementById("interes"),
-    document.getElementById("meses")
+    $("#capital"),
+    $("#interes"),
+    $("#meses")
   ];
   return inputs;
 }
 
 // Escribir función que marque el error.
 function markError(objInput, errorText, checker) {
-  let padreInput = objInput.parentElement;
-  let objIcon = (padreInput.firstElementChild.firstElementChild);
-  let objHelpBagde = padreInput.lastElementChild;
-  objIcon.classList.add("error"); // agrega la class error al Icon del input
+  let padreInput = objInput.parent();
+  let objIcon = padreInput.find(".input-group-text"); // Es el class que contiene el Icon del input
+  let objHelpBagde = padreInput.find(".help-bagde"); // Es el class contiene el Icon del input
+
+  objIcon.addClass("error"); // agrega la class error al Icon del input
+
   // Agrega el texto correspondiente al error ocurrido.
   if (checker == -1) {
-    objHelpBagde.innerHTML =`Debe ingresar un ${errorText} válido`;
+    objHelpBagde.html(`Debe ingresar un ${errorText} válido`);
   }else {
-    objHelpBagde.innerHTML =`Debe ingresar un ${errorText} mayor a 0`;
+    objHelpBagde.html(`Debe ingresar un ${errorText} mayor a 0`);
   }
 }
 
@@ -58,12 +60,16 @@ function markErrorRemove() {
   const inputs = getInputs();
 
   for (const input of inputs) {
-    let padreInput = input.parentElement;
-    let objIcon = (padreInput.firstElementChild.firstElementChild); // Es el elemento que contiene el Icon del input
-    let objHelpBagde = padreInput.lastElementChild;
-    if (objHelpBagde.innerHTML != "") {
-      objIcon.classList.remove("error");
-      objHelpBagde.innerHTML = "";
+    //console.dir(input);
+    let padreInput = input.parent();
+    //console.dir(padreInput);
+    let objIcon = padreInput.find(".input-group-text"); // Es el elemento que contiene el Icon del input
+    //console.dir(objIcon);
+    let objHelpBagde = padreInput.find(".help-bagde");
+    console.dir((objHelpBagde.html()).length);
+    if ((objHelpBagde.html()).length != 0) {
+      objIcon.removeClass("error");
+      objHelpBagde.html("");
     }
   }
 }
@@ -90,16 +96,16 @@ function validarInputs() {
 // Esta función va a mostrar el encabezado de la tabla para desglose o detalle.
 function domHeaderDesglose() {
   // Buscando el ID donde se van a colocar el encabezado de la tabla simulacion
-  let padreTabla = document.getElementById("table-header");
-  let filaDatos = document.createElement("tr");
-  filaDatos.innerHTML = 
+  let padreTabla = $("#table-header");
+  padreTabla.append(
   `
-  <th scope="col"># de Cuota</th>
-  <th scope="col">Capital Pendiente</th>
-  <th scope="col">Capital Amortizado</th>
-  <th scope="col">Interés Mensual</th>
-  <th scope="col">Cuota</th>`;
-  padreTabla.appendChild(filaDatos); // Se agrega al DOM
+  <tr>
+    <th scope="col"># de Cuota</th>
+    <th scope="col">Capital Pendiente</th>
+    <th scope="col">Capital Amortizado</th>
+    <th scope="col">Interés Mensual</th>
+    <th scope="col">Cuota</th>
+  </tr>`);
 }
 
 // Esta función va a mostrar el desglose de la cuota mes a mes, Interes pagado, capital, y cuota pura.
@@ -109,18 +115,16 @@ function mostrarDesglose(simulacion) {
   domHeaderDesglose(); // Mostrando el Header de la Table para Desglose
 
   for (const desgloseCuota of desgloseCuotasArray) {
-    let padre = document.getElementById("table-datos");
-    let filaDesglose = document.createElement("tr");
-
-    //Definimos el innerHTML del elemento con una plantilla de texto
-    filaDesglose.innerHTML = 
+    let padre = $("#table-datos");
+    padre.append(
     `
-    <th scope="row">${desgloseCuota.leerMes}</th>
-    <td>${desgloseCuota.leerCapitalPendiente.toFixed(2)}</td>
-    <td>${desgloseCuota.leerAmortizado.toFixed(2)}</td>
-    <td>${desgloseCuota.leerInteresMes.toFixed(2)}</td>
-    <td>${simulacion.leerCuota.toFixed(2)}</td>`;
-    padre.appendChild(filaDesglose);
+    <tr>
+      <th scope="row">${desgloseCuota.leerMes}</th>
+      <td>${desgloseCuota.leerCapitalPendiente.toFixed(2)}</td>
+      <td>${desgloseCuota.leerAmortizado.toFixed(2)}</td>
+      <td>${desgloseCuota.leerInteresMes.toFixed(2)}</td>
+      <td>${simulacion.leerCuota.toFixed(2)}</td>
+    </tr>`);
   }
 }
 
@@ -130,7 +134,7 @@ function resetInput() {
   const inputs = getInputs();
   // Limpia los Input
   for (const input of inputs) {
-    input.value = "";
+    input.val("");
   }
   inputs[0].focus(); // foco siempre al primer input
 }
@@ -138,9 +142,9 @@ function resetInput() {
 // Esta función crea un objeto con los datos de los input y devuelve el objeto creado, si los Input son correctos.
 function crearSimulacion() {
   if (validarInputs()) {
-    let capital = parseFloat(document.getElementById("capital").value);
-    let interes = parseFloat(document.getElementById("interes").value);
-    let meses = parseInt(document.getElementById("meses").value);
+    let capital = parseFloat($("#capital").val());
+    let interes = parseFloat($("#interes").val());
+    let meses = parseInt($("#meses").val());
     const simulacion = new Cuotas(capital, interes, meses);
     return simulacion;
   }
@@ -149,15 +153,16 @@ function crearSimulacion() {
 // Esta Función se encarga de Mostrar la informacion por HTML
 function domHeaderSimulacion() {
   // Buscando el ID donde se van a colocar el encabezado de la tabla simulacion
-  let padreTabla = document.getElementById("table-header");
-  let filaDatos = document.createElement("tr");
-  filaDatos.innerHTML = 
+  let padreTabla = $("#table-header");
+  padreTabla.append(
   `
-  <th scope="col"># de Cuotas</th>
-  <th scope="col">Capital Solicitado</th>
-  <th scope="col">Interés Anual</th>
-  <th scope="col">Cuota Promedio</th>`;
-  padreTabla.appendChild(filaDatos); // Se agrega al DOM
+  <tr>
+    <th scope="col"># de Cuotas</th>
+    <th scope="col">Capital Solicitado</th>
+    <th scope="col">Interés Anual</th>
+    <th scope="col">Cuota Promedio</th>
+  </tr>`);
+
 }
 
 function visualizarSimulacion(simulacion) {
@@ -168,33 +173,29 @@ function visualizarSimulacion(simulacion) {
   let cuotaMensual = simulacion.leerCuota;
 
   // Buscando el ID donde se van a colocar el nodo creando para mostrar
-  let padreTabla = document.getElementById("table-datos");
-  let filaDatos = document.createElement("tr");
-  // Definimos el innerHTML del elemento con una plantilla de texto
-  filaDatos.innerHTML = 
+  let padreTabla = $("#table-datos");
+  padreTabla.append(
   `
-  <th scope="row">${meses}</th>
-  <td>${capitalSolicitado.toFixed(2)}</td>
-  <td>${interesAnual.toFixed(2)}</td>
-  <td>${cuotaMensual.toFixed(2)}</td>`;
-  padreTabla.appendChild(filaDatos); // Se agrega al DOM
+  <tr>
+    <th scope="row">${meses}</th>
+    <td>${capitalSolicitado.toFixed(2)}</td>
+    <td>${interesAnual.toFixed(2)}</td>
+    <td>${cuotaMensual.toFixed(2)}</td>
+  </tr>`);
 }
 
 // Esta Función se encarga de eliminar los datos de la tabla al reiniciar
 function borrarDatosTabla() {
   // Verificando y removiendo los errores de los Inputs.
+  console.log("Entrando en borrar Tabla");
   markErrorRemove();
+  console.log("volviendo a borrar Tabla");
   // Se consulta si existen datos en la tabla, consultando si tabla-datos contiene algún hijo
-  let padreTabla = document.getElementById("table-datos");
-  if (padreTabla.children.length != 0) {
-    // Eliminando los datos de la tabla
-    for (let index = (padreTabla.children.length - 1); index >= 0; index--) {
-      let child = padreTabla.children[index];
-      padreTabla.removeChild(child);
-    }
-    padreTabla = document.getElementById("table-header");
-    let child = padreTabla.children[0]; // es fijo debido a que siempre es el primer hijo el encabezado
-    padreTabla.removeChild(child);
+  let padreTabla = $("#table-datos");
+  if (padreTabla.children().length != 0) {
+    padreTabla.empty();
+    padreTabla = $("#table-header");
+    padreTabla.empty();
   }
 }
 

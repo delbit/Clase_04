@@ -9,8 +9,12 @@
 
 // Funciones importadas
 import {resetInput} from "./modules/logic.js";
-import {listenerButton} from "./modules/app.js";
+import {listenerButton, simularCredito} from "./modules/app.js";
 
 // Funciones que Inician todo el programa;
-resetInput(); // Limpia el formulario en un Refresh
-listenerButton(); //activando el Listener del Formulario
+
+$( document ).ready(function() {
+  resetInput(); // Limpia el formulario en un Refresh
+  listenerButton(); //activando el Listener del Formulario
+});
+

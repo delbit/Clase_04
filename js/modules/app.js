@@ -17,14 +17,23 @@ var simulacion;
 // Funciones principales
 // Define los listener
 function listenerButton() {
-  var formSimulacion = document.getElementById("form-simular"); // el formSimulacion tiene un ámbito global.
-  formSimulacion.addEventListener("submit", simularCredito); // listener del summit
-  formSimulacion.addEventListener("reset", resetPage);       // listener del Reset
-  document.getElementById("detalle").addEventListener("click", simularCreditoDesglose); // listener del detalle
+  $("#form-simular").submit(function(e) { // listener del detalle
+    e.preventDefault();
+    simularCredito();
+  });
+
+  $("#detalle").click(function(e) { // listener del detalle
+    e.preventDefault();
+    simularCreditoDesglose(); 
+  });
+
+  $("#reset").click(function(e) { // listener del reset
+    e.preventDefault();
+    resetPage(); 
+  });
 }
 
-function simularCredito(e) {
-  e.preventDefault();
+function simularCredito() {
   borrarDatosTabla();
   simulacion = crearSimulacion(); // Asignando una nueva simulación la Una Simulación
   if (simulacion != undefined) {
@@ -33,8 +42,8 @@ function simularCredito(e) {
   }
 }
 
-function simularCreditoDesglose(e) {
-  e.preventDefault();
+function simularCreditoDesglose() {
+  //e.preventDefault();
   borrarDatosTabla();
   if (simulacion != undefined) {
     mostrarDesglose(simulacion); // Visualizando el desglose
@@ -48,16 +57,11 @@ function simularCreditoDesglose(e) {
   }
 }
 
-function mostrarDetalle(e){
-  e.preventDefault();
-  const simulacion = crearSimulacion(); // Creando Una Simulación
-}
-
-function resetPage(e) {
-  e.preventDefault();
+function resetPage() {
+  //e.preventDefault();
   borrarDatosTabla();
   resetInput();
   simulacion = undefined;
 }
 
-export {listenerButton, simularCredito, mostrarDetalle, resetPage}
+export {listenerButton, resetPage, simularCredito}
