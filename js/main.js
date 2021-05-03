@@ -1,16 +1,19 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 22/04/2021
- * @desafió: 2da entrega Proyecto
+ * @date: 29/04/2021
+ * @desafió: jQuery
  * @resume: La lógica del programa de Simulación.
- * Se realizo la modularizacion del codigo, haciendo que solo se cargue un archivo desde el html
+ * Se realizo la modularizacion del código, haciendo que solo se cargue un archivo desde el html
+ * Se usa jQuery para hacer uso del ready
  * */
 
 // Funciones importadas
-import {resetInput} from "./modules/logic.js";
-import {listenerButton} from "./modules/app.js";
+import { animateHero } from "./modules/logic.js";
+import { listenerButton } from "./modules/events.js";
 
-// Funciones que Inician todo el programa;
-resetInput(); // Limpia el formulario en un Refresh
-listenerButton(); //activando el Listener del Formulario
+// Funciones que Inician todo el programa, cuando el DOM esta listo;
+$(document).ready(function() {
+  animateHero();      // Muestra el texto del Hero para empezar a usar la calculadora.
+  listenerButton();   // Activando el Listener del Formulario
+});

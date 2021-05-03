@@ -4,7 +4,60 @@
   border-color: #a94442;
 }
 
+.help {
+  min-height: 1.5rem;
+}
+
 .help-bagde {
   color: #a94442;
-  min-height: 1rem;
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+#empezar {
+  display: none;
+}
+
+.hero {
+  background-image: url(/assets/hero.jpg);
+  background-color: #cccccc;
+  height: 650px;
+  background-position: 50% 70%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.hero-title {
+  margin-top: 25%;
+  text-align: center; 
+}
+
+.hero-title-inside {
+  border-radius: 5px;
+  background-color: #0069D9;
+  padding: 10px;
+  color: whitesmoke;
+}
+.hero-p {
+  margin-top: 25px;
+}
+
+@media only screen and (max-width: 1050px) {
+  .help {
+    min-height: 3.1rem;
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .hero-title {
+    font-size: 1.5rem;
+    margin-top: 40%;
+  }
+
+  .hero {
+    height: 500px;
+  }
 }
