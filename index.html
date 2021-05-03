@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="Description" content="Enter your description here" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
     <link
       rel="stylesheet"
       href="/css/style.css"
@@ -20,73 +21,90 @@
     <title>Simulador de crédito</title>
   </head>
   <body>
-    <div class="container">
-      <div class="row justify-content-md-center">
-        <h1><span class="badge badge-primary">Simulador de crédito sistema francés</span></h1>
+    <!--Hero de la pagina-->
+    <div class="container-fluid hero">
+      <div class="row">
+        <!--Información de la pagina para usar la calculadora-->
+        <div class="col-12 col-md-6 justify-content-md-center">
+          <h1 class="hero-title hidden"><span class="hero-title-inside"> Simulador de crédito sistema francés</span></h1>
+
+          <p class="hero-p text-center hidden">
+            Bienvenidos al simulador usando el sistema francés para créditos.<br />
+            Presione el botón empezar.
+          </p>
+          <div class="row text-center">
+            <div class="col"></div>
+            <div class="col-3">
+              <button type="button" id="empezar" class="btn btn-primary hidden">Empezar</button>
+            </div>
+            <div class="col"></div>
+          </div>
+        </div>
+
       </div>
-      <br>
-      <br>
-      <p class="text-center">El siguiente programa es un simulador de crédito del sistema francés.</p>
-      <p class="text-center">Ingrese los valores necesarios y presione Simular Crédito para obtener una vista rapida del credito</p>
-      <p class="text-center">Presionando Mostrar Detalle puede obtener una vista en detalle de cada cuota.</p>
     </div>
 
-    <form id="form-simular">
+    <div class="calculador hidden">
+      <!--Es el formulario donde se solicitan los datos-->
+      <form id="form-simular">
+        <div class="container mt-3">
+          <div class="row">
+            <div class="col-4">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">$</span>
+                </div>
+                <input type="number" class="form-control" id="capital" placeholder="Monto a Solicitar" aria-label="Monto">
+                <div class="help w-100"><div class="help-bagde w-100"></div></div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">%</span>
+                </div>
+                <input type="number" class="form-control" id="interes" placeholder="Interés Anual" aria-label="Interés">
+                <div class="help-bagde w-100" style="display: none"></div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">#</span>
+                </div>
+                <input type="number" class="form-control" id="meses" placeholder="Cantidad de Cuotas" aria-label="Meses">
+                <div class="help-bagde w-100"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="col-md"></div>
+            <div class="col-4 col-md-3 col-lg-2 text-center">
+              <button type="submit" class="btn btn-success">Simular Crédito</button>
+            </div>
+            <div class="col-4 col-md-3 col-lg-2 text-center">
+              <button type="button" id="detalle" class="btn btn-primary">Mostrar Detalle</button>
+            </div>
+            <div class="col-4 col-md-3 col-lg-2 text-center">
+              <button type="button" id="reset" class="btn btn-info">Limpiar Datos</button>
+            </div>
+            <div class="col-md"></div>
+          </div>
+        </div>
+      </form>
+
+      <!--Esta es la tabla que recibe los datos de la simulación-->
       <div class="container mt-3">
         <div class="row">
-          <div class="col-4">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">$</span>
-              </div>
-              <input type="number" class="form-control" id="capital" placeholder="Monto a Solicitar" aria-label="Monto">
-              <div class="help-bagde w-100"></div>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">%</span>
-              </div>
-              <input type="number" class="form-control" id="interes" placeholder="Interés Anual" aria-label="Interés">
-              <div class="help-bagde w-100"></div>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">#</span>
-              </div>
-              <input type="number" class="form-control" id="meses" placeholder="Cantidad de Cuotas" aria-label="Meses">
-              <div class="help-bagde w-100"></div>
-            </div>
-          </div>
-        </div>
-        <div class="row text-center">
-          <div class="col-md"></div>
-          <div class="col-4 col-md-3 col-lg-2 text-center">
-            <button type="submit" class="btn btn-success">Simular Crédito</button>
-          </div>
-          <div class="col-4 col-md-3 col-lg-2 text-center">
-            <button type="button" id="detalle" class="btn btn-primary">Mostrar Detalle</button>
-          </div>
-          <div class="col-4 col-md-3 col-lg-2 text-center">
-            <button type="button" id="reset" class="btn btn-info">Limpiar Datos</button>
-          </div>
-          <div class="col-md"></div>
+          <table class="table">
+            <thead id="table-header">
+            </thead>
+            <tbody id="table-datos">
+            </tbody>
+          </table>
         </div>
       </div>
-    </form>
 
-    <div class="container mt-3">
-      <div class="row">
-        <table class="table">
-          <thead id="table-header">
-          </thead>
-          <tbody id="table-datos">
-          </tbody>
-        </table>
-      </div>
     </div>
 
     <script src="/js/modules/jquery-3.6.0.js"></script>

@@ -9,11 +9,11 @@
  * */
 
 // Funciones importadas
-import { resetInput } from "./modules/logic.js";
+import { animateHero } from "./modules/logic.js";
 import { listenerButton } from "./modules/events.js";
 
 // Funciones que Inician todo el programa, cuando el DOM esta listo;
-$( document ).ready(function() {
-  resetInput(); // Limpia el formulario en un Refresh
-  listenerButton(); //activando el Listener del Formulario
+$(document).ready(function() {
+  animateHero();      // Muestra el texto del Hero para empezar a usar la calculadora.
+  listenerButton();   // Activando el Listener del Formulario
 });

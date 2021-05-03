@@ -25,41 +25,41 @@ export class Cuotas {
   }
 
   // SET y GET para cambiar o mostrar los atributos de la clase
-  set cambiarCapital(nuevoCapital){
+  set cambiarCapital(nuevoCapital) {
     this.capital = nuevoCapital;
     this.actualizarCuota();
     this.desgloseCuotas = this.desgloseFrances();
   }
 
-  set cambiarMeses(nuevoMeses){
+  set cambiarMeses(nuevoMeses) {
     this.meses = nuevoMeses;
     this.actualizarCuota();
     this.desgloseCuotas = this.desgloseFrances();
   }
 
-  set cambiarInteres(nuevoInteres){
+  set cambiarInteres(nuevoInteres) {
     this.interes = nuevoInteres;
     this.actualizarCuota();
     this.desgloseCuotas = this.desgloseFrances();
   }
 
-  get leerCapital(){
+  get leerCapital() {
     return this.capital;
   }
 
-  get leerMeses(){
+  get leerMeses() {
     return this.meses;
   }
 
-  get leerInteres(){
+  get leerInteres() {
     return this.interes;
   }
 
-  get leerInteresMensual(){
+  get leerInteresMensual() {
     return this.interesMensual;
   }
 
-  get leerCuota(){
+  get leerCuota() {
     return this.cuota;
   }
 
