@@ -30,12 +30,15 @@
 
           <p class="hero-p text-center hidden">
             Bienvenidos al simulador usando el sistema francés para créditos.<br />
-            Presione el botón empezar.
+            Presione el botón simulador.
           </p>
           <div class="row text-center">
             <div class="col"></div>
-            <div class="col-3">
-              <button type="button" id="empezar" class="btn btn-primary hidden">Empezar</button>
+            <div class="col-3 col-lg-2">
+              <button type="button" id="empezar" class="btn btn-primary hidden">Simulador</button>
+            </div>
+            <div class="col-3 col-lg-2">
+              <button type="button" id="ajax-test" class="btn btn-primary hidden">Ajax</button>
             </div>
             <div class="col"></div>
           </div>
@@ -105,6 +108,14 @@
         </div>
       </div>
 
+    </div>
+
+    <!--DIV donde se muestre el ejemplo de AJAX-->
+    <div class="ajax-test hidden">
+      <div class="container mt-5 text-center">
+        <div class="row ajax-test-box">
+        </div>
+      </div>
     </div>
 
     <script src="/js/modules/jquery-3.6.0.js"></script>

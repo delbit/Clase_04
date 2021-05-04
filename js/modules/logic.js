@@ -239,4 +239,29 @@ function tableScroll() {
   }, 1500);
 }
 
-export { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, validarInputs, animateHero }
+// Esta función es la implementación de lo que seria un evento AJAX JSON
+function ajaxTest() {
+  const URLGET = "http://hp-api.herokuapp.com/api/characters";
+
+  $.getJSON(URLGET, function (respuesta, estado) {
+    if(estado === "success"){
+      let ajaxBox = $(".ajax-test-box");
+      let personajes = respuesta;
+
+      for (const personaje of personajes) {
+        ajaxBox.append(`
+        <div class="col-6 col-md-4 col-lg-3">
+          <div>
+            <div class="w-100">
+              <img class="img-box" srcset="${personaje.image}">
+            </div>
+            <h4>${personaje.name}</h4>
+            <h5>${personaje.house}</h5>
+          </div>
+        </div>`);
+      }
+    }
+  });
+}
+
+export { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, validarInputs, animateHero, ajaxTest }

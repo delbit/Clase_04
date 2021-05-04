@@ -61,3 +61,12 @@
     height: 500px;
   }
 }
+
+.img-box {
+  max-width:100%;
+  max-height:15rem;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: -20% 0;
+}

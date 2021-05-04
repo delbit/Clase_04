@@ -9,7 +9,7 @@
  * Se modifica el nombre del archivo para entender mas su funcionalidad.
  * */
 // Import de lo necesario.
-import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla } from "./logic.js";
+import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, ajaxTest } from "./logic.js";
 
 // variable global de la simulación.
 var simulacion; 
@@ -21,6 +21,7 @@ function listenerButton() {
   $("#detalle").click(simularCreditoDesglose);  // listener del detalle.
   $("#reset").click(resetPage);                 // listener del Reset.
   $("#empezar").click(mostrarCalculador);       // listener empezar.
+  $("#ajax-test").click(ajaxEvent);
 }
 
 function simularCredito(e) {
@@ -60,9 +61,22 @@ function resetPage(e) {
 // Función que muestra la calculadora de cuotas y oculta el botón de empezar
 function mostrarCalculador(e) {
   e.preventDefault();
+  $(".ajax-test").slideUp();
   $(".calculador").slideDown();
   $(e.target).fadeOut("slow");
+  $("#ajax-test").fadeIn();
   resetInput();
+  borrarDatosTabla();
+  simulacion = undefined;
+}
+
+function ajaxEvent(e){
+  e.preventDefault();
+  $(".calculador").slideUp();
+  $(".ajax-test").slideDown();
+  $(e.target).fadeOut("slow");
+  $("#empezar").fadeIn();
+  ajaxTest();
 }
 
 export {listenerButton, resetPage, simularCredito}
