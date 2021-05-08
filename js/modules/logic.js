@@ -95,15 +95,9 @@ function validarInputs() {
   return check;                 // Regresando validación, Si alguna Input es invalido se retorna una false. 
 }
 
-// Esta función se encarga de escribir el Header de la Tabla.
-function domHeaderTable(texts) {
-  let padreTabla = $("#table-header");
-  padreTabla.append(texts);
-}
-// Esta función se encarga de escribir una fila de la Tabla.
-function domRowTable(texts) {
-  let padreTabla = $("#table-datos");
-  padreTabla.append(texts);
+// Esta función se encarga de append en el nodo especificado.
+function domAddToNode(text, node) {
+  node.append(text);
 }
 
 // Esta función se encarga limpiar los valores de los input y hacer foco en el primer input.
@@ -148,20 +142,22 @@ function visualizarSimulacion(simulacion) {
     <td class="hidden">${simulacion.leerCuota.toFixed(2)}</td>
   </tr>`;
 
-  // Debido a que se elimina codigo, es necesario un retraso en el moeto de volver a escribir los datos nuevos.
-  setTimeout(function (){
-    domHeaderTable(textsHeader);  // Se enviá el encabezado de la tabla.
-    domRowTable(textsRow);        // Se enviá la fila a la tabla.
-    tableAnimate();               // Animación de las filas de la tabla.
+  // Debido a que se elimina codigo, es necesario un retraso al momento de volver a escribir los datos nuevos.
+  setTimeout( function (){
+    domAddToNode(textsHeader, $("#table-header"));
+    domAddToNode(textsRow, $("#table-datos"));
+    tableAnimate(cualTabla("cal")); // Animación de la tabla.
   },200);                         // El valor es el numero del retraso de la animación.
 }
 
 // Esta función va a mostrar el desglose de la cuota mes a mes, Interes pagado, capital, y cuota pura.
 function mostrarDesglose(simulacion) {
+  let tableHeader = $("#table-header");
+  let tableRow = $("#table-datos");
   // Recuperando el Arreglo del desglose de las cuotas.
   let desgloseCuotasArray = simulacion.leerDesgloseCuotas;
   // Texto del encabezado de la tabla.
-  let textsHeader = `
+  let textHeader = `
   <tr>
     <th class="hidden" scope="col"># de Cuota</th>
     <th class="hidden" scope="col">Capital Pendiente</th>
@@ -171,11 +167,11 @@ function mostrarDesglose(simulacion) {
   </tr>`;
 
   // Debido a que se elimina codigo de los div, es necesario un retraso en el momento de volver a escribir los datos nuevos.
-  setTimeout(function (){
-    domHeaderTable(textsHeader); // Se envia el encabezado de la tabla.
+  setTimeout( function (){
+    domAddToNode(textHeader, tableHeader); // Se envia el encabezado de la tabla.
     for (const desgloseCuota of desgloseCuotasArray) {
       // Texto de cada fila de la tabla.
-      let textsRow = `
+      let textRow = `
       <tr>
         <td class="hidden" scope="row"><strong>${desgloseCuota.leerMes}</strong></td>
         <td class="hidden">${desgloseCuota.leerCapitalPendiente.toFixed(2)}</td>
@@ -184,43 +180,52 @@ function mostrarDesglose(simulacion) {
         <td class="hidden">${simulacion.leerCuota.toFixed(2)}</td>
       </tr>`;
 
-      domRowTable(textsRow);  // Se enviá el texto de fila a la tabla.
+      domAddToNode(textRow, tableRow);  // Se enviá el texto de fila a la tabla.
     }
-    tableAnimate();           // Animación de las filas de la tabla.
+    tableAnimate(cualTabla("cal"));           // Animación de las filas de la tabla calculadora
   },200);                     // El valor es el numero del retraso de la animación.
 
-  tableScroll();              // Animación para central la tabla.
+  scrollToNodo(tableHeader);  // Animación para central la tabla.
+}
+
+function cualTabla(pCual) {
+  if(pCual == "cal") {
+    return ([$("#table-header"),$("#table-datos")])
+  }
+
+  if(pCual == "dolar") {
+    return ([$("#table-header-ajax"),$("#table-datos-ajax")])
+  }
 }
 
 // Esta Función se encarga de eliminar los datos de la tabla al reiniciar.
-function borrarDatosTabla() {
-  // Verificando y removiendo los errores de los Inputs.
-  markErrorRemove();
+function borrarDatosTabla(pCual) {
+  let tablas = cualTabla(pCual);
+  let tablaHeader = tablas[0]; // EL array devuelto siempre debe traer el Header de primero, luego la de datos
+  let tablaRow  = tablas[1];
   // Se consulta si existen datos en la tabla, consultando si tabla-datos contiene algún hijo.
-  let padreTabla = $("#table-datos");
-  if (padreTabla.children().length != 0) {
-    tableAnimate("H");
+  if (tablaRow.children().length != 0) {
+    tableAnimate(tablas,"H");
 
     // esta llamada lo que hace es retrasar el borrado de la tabla para que la animación se pueda ver.
     setTimeout(function (){
-      padreTabla.empty();
-      padreTabla = $("#table-header");
-      padreTabla.empty();
+      tablaRow.empty();
+      tablaHeader.empty();
     }, 150);
   }
 }
 
 // Funcion para mostrar u ocultar los datos S = Show (mostrar) / H = Hidden (ocultar).
-function tableAnimate(evento = "S") {
-  let headerTabla = $("#table-header th");
-  let rowsTabla = $("#table-datos td");
+function tableAnimate(tablas, evento = "S") {
+  let tablaHeader = tablas[0].find("th");
+  let tablaRow = tablas[1].find("td");
 
   if (evento == "S") {
-    headerTabla.slideDown(250);
-    rowsTabla.slideDown(250);
+    tablaHeader.slideDown(250);
+    tablaRow.slideDown(250);
   } else {
-    headerTabla.slideUp(150);
-    rowsTabla.slideUp(150);
+    tablaHeader.slideUp(150);
+    tablaRow.slideUp(150);
   }
 }
 
@@ -228,40 +233,58 @@ function tableAnimate(evento = "S") {
 function animateHero() {
   $(".hero-title").fadeIn(250, function () {
     $(".hero-p").slideDown(250);
-    $("#empezar").fadeIn("fast");
+    $(".hero button").fadeIn();
   });
 }
 
-// Esta función centra la tabla en la pantalla.
-function tableScroll() {
+// Esta función centra a un nodo la pantalla.
+function scrollToNodo(nodo) {
   $('html, body').animate({
-    scrollTop: $("#table-header").offset().top
+    scrollTop: nodo.offset().top
   }, 1500);
 }
 
 // Esta función es la implementación de lo que seria un evento AJAX JSON
-function ajaxTest() {
-  const URLGET = "http://hp-api.herokuapp.com/api/characters";
+function obtenerAPI() {
+  const URLGET = "/data/dolarAPI.json";
 
-  $.getJSON(URLGET, function (respuesta, estado) {
+  $.getJSON(URLGET, function (respuestas, estado) {
+    let headerAjax = $("#table-header-ajax")
     if(estado === "success"){
-      let ajaxBox = $(".ajax-test-box");
-      let personajes = respuesta;
+      let textHeader =`
+      <tr>
+        <th scope="col">Dólar</th>
+        <th scope="col">Fecha</th>
+        <th scope="col">Compra</th>
+        <th scope="col">Venta</th>
+      </tr>
+      `;
+      domAddToNode(textHeader, headerAjax);
 
-      for (const personaje of personajes) {
-        ajaxBox.append(`
-        <div class="col-6 col-md-4 col-lg-3">
-          <div>
-            <div class="w-100">
-              <img class="img-box" srcset="${personaje.image}">
-            </div>
-            <h4>${personaje.name}</h4>
-            <h5>${personaje.house}</h5>
-          </div>
-        </div>`);
+      for (const objJson of respuestas) {
+        obtenerCotizaciones(objJson);
       }
+      scrollToNodo(headerAjax);
     }
   });
 }
 
-export { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, validarInputs, animateHero, ajaxTest }
+function obtenerCotizaciones(objJson) {
+  $.ajax({
+    dataType: objJson.metodo,
+    url: objJson.url,
+    success:( (response) => {
+      let textRow = `
+      <tr>
+        <td scope="row"><strong>${objJson.descripcion}</strong></td>
+        <td>${response.fecha.slice(0, 10)}</td>
+        <td>${response.compra}</td>
+        <td>${response.venta}</td>
+      </tr>
+      `;
+      domAddToNode(textRow, $("#table-datos-ajax"));
+    })
+  });
+}
+
+export { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, validarInputs, animateHero, markErrorRemove, obtenerAPI }

@@ -1,15 +1,13 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 29/04/2021
- * @desafió: moviendo a jQuery
- * @resume: El archivo principal solo se encarga de llamar lo mas esencial del programa.
- * La función se encarga de hacer los llamado necesarios para asignar, calcular y mostrar los datos.
- * Para este desafió modifico el código para usar jQuery en la manipulación del DOM.
- * Se modifica el nombre del archivo para entender mas su funcionalidad.
+ * @date: 08/05/2021
+ * @desafió: 3era Entrega
+ * @resume: Events.js están todos los eventos necesarios para hacer hacer funcionar los programas.
+ * 
  * */
 // Import de lo necesario.
-import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, ajaxTest } from "./logic.js";
+import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, markErrorRemove, obtenerAPI } from "./logic.js";
 
 // variable global de la simulación.
 var simulacion; 
@@ -26,7 +24,8 @@ function listenerButton() {
 
 function simularCredito(e) {
   e.preventDefault();
-  borrarDatosTabla();
+  markErrorRemove();
+  borrarDatosTabla("cal");
   simulacion = crearSimulacion(); // Asignando una nueva simulación la Una Simulación.
   if (simulacion != undefined) {
     visualizarSimulacion(simulacion); // Visualizando la simulación simple.
@@ -36,7 +35,9 @@ function simularCredito(e) {
 
 function simularCreditoDesglose(e) {
   e.preventDefault();
-  borrarDatosTabla();
+  // Verificando y removiendo los errores de los Inputs.
+  markErrorRemove();
+  borrarDatosTabla("cal");
 
   if (simulacion != undefined) {
     mostrarDesglose(simulacion); // Visualizando el desglose.
@@ -53,7 +54,7 @@ function simularCreditoDesglose(e) {
 // Función encargada de limpiar la pantalla, borrando la tabla, los valores del los Input y la simulacion.
 function resetPage(e) {
   e.preventDefault();
-  borrarDatosTabla();
+  borrarDatosTabla("cal");
   resetInput();
   simulacion = undefined;
 }
@@ -66,17 +67,20 @@ function mostrarCalculador(e) {
   $(e.target).fadeOut("slow");
   $("#ajax-test").fadeIn();
   resetInput();
-  borrarDatosTabla();
+  borrarDatosTabla("cal");
   simulacion = undefined;
 }
 
 function ajaxEvent(e){
   e.preventDefault();
+  borrarDatosTabla("dolar");
   $(".calculador").slideUp();
   $(".ajax-test").slideDown();
   $(e.target).fadeOut("slow");
   $("#empezar").fadeIn();
-  ajaxTest();
+  setTimeout(function (){
+    obtenerAPI();
+  },400);
 }
 
 export {listenerButton, resetPage, simularCredito}
