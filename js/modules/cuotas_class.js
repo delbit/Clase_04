@@ -1,14 +1,15 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 22/04/2021
- * @desafió: 2da entrega Proyecto
+ * @date: 08/05/2021
+ * @desafió: 3era entrega Proyecto
  * @resume:
  * Clase a usar en el simulador de Crédito  francés.
  * Se modifico el constructor para hacerlo consistente con el Orden de los Input del HTML
  * Se adiciona una nueva propiedad a la clase para tener el detalle de cada cuota mensual.
  * Para esa propiedad se crea la función necesaria que realiza los cálculos necesarios del sistema francés
  * */
+
 // Import de la class
 import { Desglose } from "./desglose_class.js";
 // Class

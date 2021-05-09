@@ -1,13 +1,12 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 29/04/2021
- * @desafió: jQuery
+ * @date: 08/05/2021
+ * @desafió: 3er Entrega
  * @resume: La lógica del programa de Simulación.
- * Se eliminaron las funciones innecesarias
- * Se realizo un refactoring de funcion Validar y markError, haciendo el codigo mas DRY
- * Refactoring a las funciones que escriben el DOM con los datos haciendo las mas DRY
- * Se crean las funciones de validaciones de necesarias para que el usuario no pueda ingresar valores incorrectos.
+ * se modificaron alguna funciones para que puedan trabajar con diferente valores.
+ * Se crea la lógica de obtener mediante un getJson las url de un API de cotizaciones del dolar
+ * También la lógica que hace uso de esas API para representar las cotizaciones mas relevantes.
  * */
 
 // Import de la class
@@ -124,6 +123,9 @@ function crearSimulacion() {
 
 // Esta función va a mostrar la información del crédito de manera rápida.
 function visualizarSimulacion(simulacion) {
+  let tablas = cualTabla("cal");
+  let tablaHeader = tablas[0]; // EL array devuelto siempre debe traer el Header de primero, luego la de datos
+  let tablaRow  = tablas[1];
   // El texto del encabezado de la tabla.
   let textsHeader =`
   <tr>
@@ -144,18 +146,21 @@ function visualizarSimulacion(simulacion) {
 
   // Debido a que se elimina codigo, es necesario un retraso al momento de volver a escribir los datos nuevos.
   setTimeout( function (){
-    domAddToNode(textsHeader, $("#table-header"));
-    domAddToNode(textsRow, $("#table-datos"));
+    domAddToNode(textsHeader, tablaHeader);
+    domAddToNode(textsRow, tablaRow);
     tableAnimate(cualTabla("cal")); // Animación de la tabla.
-  },200);                         // El valor es el numero del retraso de la animación.
+  },200);                           // El valor es el numero del retraso de la animación.
 }
 
-// Esta función va a mostrar el desglose de la cuota mes a mes, Interes pagado, capital, y cuota pura.
+// Esta función va a mostrar el desglose de la cuota mes a mes, Interés pagado, capital, y cuota pura.
 function mostrarDesglose(simulacion) {
-  let tableHeader = $("#table-header");
-  let tableRow = $("#table-datos");
+  let tablas = cualTabla("cal");
+  let tablaHeader = tablas[0]; // EL array devuelto siempre debe traer el Header de primero, luego la de datos
+  let tablaRow  = tablas[1];
+
   // Recuperando el Arreglo del desglose de las cuotas.
   let desgloseCuotasArray = simulacion.leerDesgloseCuotas;
+
   // Texto del encabezado de la tabla.
   let textHeader = `
   <tr>
@@ -168,7 +173,7 @@ function mostrarDesglose(simulacion) {
 
   // Debido a que se elimina codigo de los div, es necesario un retraso en el momento de volver a escribir los datos nuevos.
   setTimeout( function (){
-    domAddToNode(textHeader, tableHeader); // Se envia el encabezado de la tabla.
+    domAddToNode(textHeader, tablaHeader);                  // Se envia el encabezado de la tabla.
     for (const desgloseCuota of desgloseCuotasArray) {
       // Texto de cada fila de la tabla.
       let textRow = `
@@ -180,12 +185,12 @@ function mostrarDesglose(simulacion) {
         <td class="hidden">${simulacion.leerCuota.toFixed(2)}</td>
       </tr>`;
 
-      domAddToNode(textRow, tableRow);  // Se enviá el texto de fila a la tabla.
+      domAddToNode(textRow, tablaRow);                      // Se enviá el texto de fila a la tabla.
     }
-    tableAnimate(cualTabla("cal"));           // Animación de las filas de la tabla calculadora
-  },200);                     // El valor es el numero del retraso de la animación.
+    tableAnimate(tablas);                                   // Animación de las filas de la tabla calculadora
+  },200);                                                   // El valor es el numero del retraso de la animación.
 
-  scrollToNodo(tableHeader);  // Animación para central la tabla.
+  scrollToNodo(tablaHeader);                                // Animación para central la tabla.
 }
 
 function cualTabla(pCual) {
@@ -201,14 +206,15 @@ function cualTabla(pCual) {
 // Esta Función se encarga de eliminar los datos de la tabla al reiniciar.
 function borrarDatosTabla(pCual) {
   let tablas = cualTabla(pCual);
-  let tablaHeader = tablas[0]; // EL array devuelto siempre debe traer el Header de primero, luego la de datos
+  let tablaHeader = tablas[0];            // EL array devuelto siempre debe traer el Header de primero, luego la de datos.
   let tablaRow  = tablas[1];
+
   // Se consulta si existen datos en la tabla, consultando si tabla-datos contiene algún hijo.
   if (tablaRow.children().length != 0) {
     tableAnimate(tablas,"H");
 
-    // esta llamada lo que hace es retrasar el borrado de la tabla para que la animación se pueda ver.
-    setTimeout(function (){
+    // Esta llamada lo que hace es retrasar el borrado de la tabla para que la animación se pueda ver.
+    setTimeout( function (){
       tablaRow.empty();
       tablaHeader.empty();
     }, 150);
@@ -269,6 +275,8 @@ function obtenerAPI() {
   });
 }
 
+// Esta es la implementación de un Ajax con estructura diferente, obtiene los datos desde un objeto el cual tiene 
+// la Api de cotización y la va mostrando en pantalla.
 function obtenerCotizaciones(objJson) {
   $.ajax({
     dataType: objJson.metodo,
