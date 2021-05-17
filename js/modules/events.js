@@ -8,7 +8,8 @@
  * */
 // Import de lo necesario.
 import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, 
-  markErrorRemove, obtenerAPI, crearInteresCompuesto, getInputsCredito, getInputsInteres } from "./logic.js";
+  markErrorRemove, obtenerAPI, crearInteresCompuesto, getInputsCredito, getInputsInteres,
+  getInputsInteresReset } from "./logic.js";
 
 // variable global de la simulación.
 var simulacion; 
@@ -22,6 +23,7 @@ function listenerButton() {
   $("#empezar").click(mostrarCalculador);       // listener empezar.
   $("#ajax-test").click(ajaxEvent);             // Listener del ajax cotizaciones
   $("#form-interes").submit(ejecutarInteres);   // Listener del Interes Compuesto
+  $("#form-interes-reset").click(resetInteres); // Listener del Reset Interes Compuesto
 }
 
 function simularCredito(e) {
@@ -102,7 +104,17 @@ function ajaxEvent(e){
 
 function ejecutarInteres(e) {
   e.preventDefault();
+  let inputsInteres = getInputsInteres();
+  markErrorRemove(inputsInteres);
   crearInteresCompuesto();
+}
+
+function resetInteres(e) {
+  e.preventDefault();
+  let inputsInteres = getInputsInteres();
+  let inputsInteresReset = getInputsInteresReset();
+  markErrorRemove(inputsInteres);
+  resetInput(inputsInteresReset);
 }
 
 export {listenerButton, resetPage, simularCredito}

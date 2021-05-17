@@ -30,6 +30,19 @@ function validarInput(objInput,errorText) {
   }
   return checker;         // Se parte de la hipótesis de que los input son validos.
 }
+ 
+function validarInputMultiplo(objInputMes,objInputPeriodo,errorText) {
+  let valueInput = parseInt(objInputMes.val());
+  let valuePeriodo = 12 / parseInt(objInputPeriodo.val());
+  var resto = valueInput % valuePeriodo;
+  let checker = true;
+
+  if (resto != 0) {
+    markError(objInputPeriodo, errorText, -1);
+    checker = false;
+  }
+  return checker;
+}
 
 // El Array de inputs es en el orden Capital, Interés, meses.
 function getInputsCredito() {
@@ -52,6 +65,17 @@ function getInputsInteres() {
   return inputs;
 }
 
+function getInputsInteresReset() {
+  const inputs = [
+    $("#form-interes-capital"),
+    $("#form-interes-interes"),
+    $("#form-interes-meses"),
+    $("#form-interes-interes-ganado"),
+    $("#form-interes-capital-ganado")
+  ];
+  return inputs;
+}
+
 /*
 * Función que se encarga de mostrar los errores de ingreso de los Input, también puede borrarlos.
  * -1 el numero es un NaN
@@ -60,24 +84,30 @@ function getInputsInteres() {
  * default borrar los errores.
  */
 function markError(objInput, errorText = "", checker = "remove") {
-  let padreInput = objInput.parent();
+  let padreInput = (objInput.parents(".input-group"));
   let objIcon = padreInput.find(".input-group-text");       // Es el class que contiene el Icon del input.
   let objHelpBagde = padreInput.find(".help-bagde");        // Es el class contiene el div para el texto de error para el input.
 
   // Agrega el texto correspondiente al error ocurrido dato no Valido.
   if (checker == -1) {
-    objHelpBagde.html(`Debe ingresar un ${errorText} válido`).fadeIn(250);
-    objIcon.addClass("error");        // agrega la class error al Icon del input.
+    setTimeout( function (){
+      objHelpBagde.html(`Debe ingresar un ${errorText} válido`).fadeIn(100);
+      objIcon.addClass("error");        // agrega la class error al Icon del input.
+    },100);
   }
   if (checker == 0) {
-    objHelpBagde.html(`Debe ingresar un ${errorText} mayor a 0`).fadeIn(250);
-    objIcon.addClass("error");        // agrega la class error al Icon del input.
+    setTimeout( function (){
+      objHelpBagde.html(`Debe ingresar un ${errorText} mayor a 0`).fadeIn(100);
+      objIcon.addClass("error");        // agrega la class error al Icon del input.
+    },100);
   }
   // Esta sentencia remueve el error del input.
   if ((checker == "remove") && (objHelpBagde.html.length != 0)) {
     objIcon.removeClass("error");
-    objHelpBagde.fadeOut(50).delay(5);
-    objHelpBagde.html(errorText);
+    objHelpBagde.fadeOut(50);
+    setTimeout( function (){
+      objHelpBagde.html(errorText);
+    },100);
   }
 }
 
@@ -89,14 +119,14 @@ function markErrorRemove(inputs) {
 }
 
 // esta funcion se encarga de verificar todos los Inputs del formulario.
-function validarInputs(inputs) {
+function validarInputs(inputs, errorTexts) {
   let check = true;
   //const inputs = getInputsCredito();     // El array devuelto es Capital, Interés, Meses, el errorText sigue ese orden.
-  const errorTexts = [
+  /*const errorTexts = [
     "<b>monto a solicitar</b>",
     "<b>interés anual</b>",
     "<b>número de cuotas</b>"
-  ];
+  ];*/
   // Validando cada Input.
   for (let index = 0; index < inputs.length; index++) {
     if (validarInput($(inputs[index]),errorTexts[index]) != true) {
@@ -123,7 +153,13 @@ function resetInput(inputs) {
 
 // Esta función crea un objeto con los datos de los input y devuelve el objeto creado, si los Input son correctos.
 function crearSimulacion() {
-  if (validarInputs(getInputsCredito())) {
+  let inputsCredito = getInputsCredito();
+  const errorTexts = [
+    "<b>monto a solicitar</b>",
+    "<b>interés anual</b>",
+    "<b>número de cuotas</b>"
+  ];
+  if (validarInputs(inputsCredito, errorTexts)) {
     let capital = parseFloat($("#capital").val());
     let interes = parseFloat($("#interes").val());
     let meses = parseInt($("#meses").val());
@@ -306,24 +342,41 @@ function obtenerCotizaciones(objJson) {
   });
 }
 
+function validarInputInteresCompuesto(inputs) {
+  let checker = false;
+  const errorTexts = [
+    "<b>capital inicial</b>",
+    "<b>interés anual</b>",
+    "<b>periodo de meses</b>"
+  ];
+  const errorTextsSelector = "<b>Frecuencia de abono</b>"
+
+  let validator1 = validarInputs(inputs, errorTexts);
+  let validator2 = validarInputMultiplo(inputs[2],inputs[3], errorTextsSelector);
+
+  if ((validator1) && (validator2)) {
+    checker = true;
+  }
+  return checker;
+}
+
 function crearInteresCompuesto() {
-  let inputs = getInputsInteres();
-  let capital = parseFloat(inputs[0].val());
-  let interes = parseFloat(inputs[1].val());
-  let meses = parseInt(inputs[2].val());
-  let tipoPeriodo = parseInt(inputs[3].val());
+  let inputsInteres = getInputsInteres();
+  scrollToNodo($("#form-interes"));
 
-  const intComp = new InteresComp(capital, interes, meses, tipoPeriodo);
+  if (validarInputInteresCompuesto(inputsInteres)) {
+    let capital = parseFloat(inputsInteres[0].val());
+    let interes = parseFloat(inputsInteres[1].val());
+    let meses = parseInt(inputsInteres[2].val());
+    let tipoPeriodo = parseInt(inputsInteres[3].val());
 
-  $("#form-interes-interes-ganado").val(intComp.interesCompuesto.toFixed(2));
-  $("#form-interes-capital-ganado").val(intComp.capitalFinal.toFixed(2));
-  
-  console.log("capital Final");
-  console.log(intComp.capitalFinal.toFixed(2));
-  console.log("Interes Ganado");
-  console.log(intComp.interesCompuesto.toFixed(2));
-    
+    const intComp = new InteresComp(capital, interes, meses, tipoPeriodo);
+
+    $("#form-interes-interes-ganado").val(intComp.interesCompuesto.toFixed(2));
+    $("#form-interes-capital-ganado").val(intComp.capitalFinal.toFixed(2));
+  }
 }
 
 export { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, 
-  validarInputs, animateHero, markErrorRemove, obtenerAPI, crearInteresCompuesto, getInputsCredito, getInputsInteres }
+  validarInputs, animateHero, markErrorRemove, obtenerAPI, crearInteresCompuesto, getInputsCredito,
+  getInputsInteres, getInputsInteresReset }
