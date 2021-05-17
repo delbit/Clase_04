@@ -11,6 +11,7 @@
 
 // Import de la class
 import { Cuotas } from "./cuotas_class.js";
+import { InteresComp } from "./class/interesComp.js"
 
 //***Funciones de Validaciones de entrada datos***
 
@@ -31,11 +32,22 @@ function validarInput(objInput,errorText) {
 }
 
 // El Array de inputs es en el orden Capital, Interés, meses.
-function getInputs() {
+function getInputsCredito() {
   const inputs = [
     $("#capital"),
     $("#interes"),
     $("#meses")
+  ];
+  return inputs;
+}
+
+// El Array de inputs es en el orden Capital, Interés, meses, tipo periodo
+function getInputsInteres() {
+  const inputs = [
+    $("#form-interes-capital"),
+    $("#form-interes-interes"),
+    $("#form-interes-meses"),
+    $("#form-interes-periodo"),
   ];
   return inputs;
 }
@@ -69,17 +81,17 @@ function markError(objInput, errorText = "", checker = "remove") {
   }
 }
 
-function markErrorRemove() {
-  const inputs = getInputs();
+function markErrorRemove(inputs) {
+  //const inputs = getInputsCredito();
   for (const input of inputs) {
     markError($(input));          //Reutilizamos la función modificada para que por default sea remover error.
   }
 }
 
 // esta funcion se encarga de verificar todos los Inputs del formulario.
-function validarInputs() {
+function validarInputs(inputs) {
   let check = true;
-  const inputs = getInputs();     // El array devuelto es Capital, Interés, Meses, el errorText sigue ese orden.
+  //const inputs = getInputsCredito();     // El array devuelto es Capital, Interés, Meses, el errorText sigue ese orden.
   const errorTexts = [
     "<b>monto a solicitar</b>",
     "<b>interés anual</b>",
@@ -101,9 +113,8 @@ function domAddToNode(text, node) {
 
 // Esta función se encarga limpiar los valores de los input y hacer foco en el primer input.
 // Se usa al inicio del programa y cuando se ejecuta el form.
-function resetInput() {
-  const inputs = getInputs();
-  // Limpia los Input.
+function resetInput(inputs) {
+  //const inputs = getInputsCredito();
   for (const input of inputs) {
     $(input).val("");
   }
@@ -112,7 +123,7 @@ function resetInput() {
 
 // Esta función crea un objeto con los datos de los input y devuelve el objeto creado, si los Input son correctos.
 function crearSimulacion() {
-  if (validarInputs()) {
+  if (validarInputs(getInputsCredito())) {
     let capital = parseFloat($("#capital").val());
     let interes = parseFloat($("#interes").val());
     let meses = parseInt($("#meses").val());
@@ -295,4 +306,24 @@ function obtenerCotizaciones(objJson) {
   });
 }
 
-export { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, validarInputs, animateHero, markErrorRemove, obtenerAPI }
+function crearInteresCompuesto() {
+  let inputs = getInputsInteres();
+  let capital = parseFloat(inputs[0].val());
+  let interes = parseFloat(inputs[1].val());
+  let meses = parseInt(inputs[2].val());
+  let tipoPeriodo = parseInt(inputs[3].val());
+
+  const intComp = new InteresComp(capital, interes, meses, tipoPeriodo);
+
+  $("#form-interes-interes-ganado").val(intComp.interesCompuesto.toFixed(2));
+  $("#form-interes-capital-ganado").val(intComp.capitalFinal.toFixed(2));
+  
+  console.log("capital Final");
+  console.log(intComp.capitalFinal.toFixed(2));
+  console.log("Interes Ganado");
+  console.log(intComp.interesCompuesto.toFixed(2));
+    
+}
+
+export { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, 
+  validarInputs, animateHero, markErrorRemove, obtenerAPI, crearInteresCompuesto, getInputsCredito, getInputsInteres }

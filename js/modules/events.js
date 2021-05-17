@@ -7,7 +7,8 @@
  * 
  * */
 // Import de lo necesario.
-import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, markErrorRemove, obtenerAPI } from "./logic.js";
+import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, 
+  markErrorRemove, obtenerAPI, crearInteresCompuesto, getInputsCredito, getInputsInteres } from "./logic.js";
 
 // variable global de la simulación.
 var simulacion; 
@@ -20,33 +21,36 @@ function listenerButton() {
   $("#reset").click(resetPage);                 // listener del Reset.
   $("#empezar").click(mostrarCalculador);       // listener empezar.
   $("#ajax-test").click(ajaxEvent);             // Listener del ajax cotizaciones
+  $("#form-interes").submit(ejecutarInteres);   // Listener del Interes Compuesto
 }
 
 function simularCredito(e) {
   e.preventDefault();
-  markErrorRemove();
+  let inputsCredito = getInputsCredito();
+  markErrorRemove(inputsCredito);
   borrarDatosTabla("cal");
   simulacion = crearSimulacion();               // Asignando una nueva simulación la Una Simulación.
   if (simulacion != undefined) {
     visualizarSimulacion(simulacion);           // Visualizando la simulación simple.
-    resetInput();
+    resetInput(inputsCredito);
   }
 }
 
 function simularCreditoDesglose(e) {
   e.preventDefault();
+  let inputsCredito = getInputsCredito();
   // Verificando y removiendo los errores de los Inputs.
-  markErrorRemove();
+  markErrorRemove(inputsCredito);
   borrarDatosTabla("cal");
 
   if (simulacion != undefined) {
     mostrarDesglose(simulacion);                // Visualizando el desglose.
-    resetInput();
+    resetInput(inputsCredito);
   } else {
     simulacion = crearSimulacion();
     if (simulacion != undefined) {
       mostrarDesglose(simulacion);              // Visualizando el desglose.
-      resetInput();
+      resetInput(inputsCredito);
     }
   }
 }
@@ -54,8 +58,10 @@ function simularCreditoDesglose(e) {
 // Función encargada de limpiar la pantalla, borrando la tabla, los valores del los Input y la simulacion.
 function resetPage(e) {
   e.preventDefault();
+  let inputsCredito = getInputsCredito();
   borrarDatosTabla("cal");
-  resetInput();
+  markErrorRemove(inputsCredito);
+  resetInput(inputsCredito);
   simulacion = undefined;
 }
 
@@ -66,11 +72,12 @@ function resetPage(e) {
  */
 function mostrarCalculador(e) {
   e.preventDefault();
+  let inputsCredito = getInputsCredito();
   $(".ajax-test").slideUp();
   $(".calculador").slideDown();
   $(e.target).fadeOut("slow");
   $("#ajax-test").fadeIn();
-  resetInput();
+  resetInput(inputsCredito);
   borrarDatosTabla("cal");
   simulacion = undefined;
 }
@@ -91,6 +98,11 @@ function ajaxEvent(e){
   setTimeout(function (){
     obtenerAPI();
   },400);
+}
+
+function ejecutarInteres(e) {
+  e.preventDefault();
+  crearInteresCompuesto();
 }
 
 export {listenerButton, resetPage, simularCredito}
