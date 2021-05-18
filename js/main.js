@@ -9,8 +9,12 @@
  * */
 
 // Funciones importadas
+import { builderPage } from "./modules/pages/builderPage.js";
 import { animateHero } from "./modules/app/logic.js";
 import { listenerButton } from "./modules/events/events.js";
+
+//creando el DOM
+builderPage();
 
 // Funciones que Inician todo el programa, cuando el DOM esta listo;
 $(document).ready(function() {
