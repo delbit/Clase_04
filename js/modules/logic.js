@@ -30,7 +30,7 @@ function validarInput(objInput,errorText) {
   }
   return checker;         // Se parte de la hipótesis de que los input son validos.
 }
- 
+
 function validarInputMultiplo(objInputMes,objInputPeriodo,errorText) {
   let valueInput = parseInt(objInputMes.val());
   let valuePeriodo = 12 / parseInt(objInputPeriodo.val());
@@ -176,7 +176,7 @@ function visualizarSimulacion(simulacion) {
   // El texto del encabezado de la tabla.
   let textsHeader =`
   <tr>
-    <th class="hidden" scope="col"># de Cuotas</th>
+    <th class="hidden" scope="col"># Cuotas</th>
     <th class="hidden" scope="col">Capital Solicitado</th>
     <th class="hidden" scope="col">Interés Anual</th>
     <th class="hidden" scope="col">Cuota Promedio</th>
@@ -211,11 +211,11 @@ function mostrarDesglose(simulacion) {
   // Texto del encabezado de la tabla.
   let textHeader = `
   <tr>
-    <th class="hidden" scope="col"># de Cuota</th>
-    <th class="hidden" scope="col">Capital Pendiente</th>
-    <th class="hidden" scope="col">Capital Amortizado</th>
-    <th class="hidden" scope="col">Interés Mensual</th>
-    <th class="hidden" scope="col">Cuota</th>
+    <th class="hidden text-truncate" scope="col">Cuota</th>
+    <th class="hidden text-truncate" scope="col">Capital Pendiente</th>
+    <th class="hidden text-truncate" scope="col">Capital Amortizado</th>
+    <th class="hidden text-truncate" scope="col">Interés Mensual</th>
+    <th class="hidden text-truncate" scope="col">Cuota</th>
   </tr>`;
 
   // Debido a que se elimina codigo de los div, es necesario un retraso en el momento de volver a escribir los datos nuevos.
