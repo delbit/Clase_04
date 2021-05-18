@@ -11,7 +11,7 @@
  * */
 
 // Import de la class
-import { Desglose } from "./desglose_class.js";
+import { Desglose } from "./desglose.js";
 // Class
 export class Cuotas {
   constructor(capital, interes, meses) {

@@ -9,8 +9,8 @@
  * */
 
 // Funciones importadas
-import { animateHero } from "./modules/logic.js";
-import { listenerButton } from "./modules/events.js";
+import { animateHero } from "./modules/app/logic.js";
+import { listenerButton } from "./modules/events/events.js";
 
 // Funciones que Inician todo el programa, cuando el DOM esta listo;
 $(document).ready(function() {

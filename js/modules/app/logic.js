@@ -10,8 +10,8 @@
  * */
 
 // Import de la class
-import { Cuotas } from "./cuotas_class.js";
-import { InteresComp } from "./class/interesComp.js"
+import { Cuotas } from "../class/cuotas.js";
+import { InteresComp } from "../class/interesComp.js"
 
 //***Funciones de Validaciones de entrada datos***
 
@@ -197,6 +197,7 @@ function visualizarSimulacion(simulacion) {
     domAddToNode(textsRow, tablaRow);
     tableAnimate(cualTabla("cal")); // Animación de la tabla.
   },200);                           // El valor es el numero del retraso de la animación.
+  scrollToNodo(tablaHeader);
 }
 
 // Esta función va a mostrar el desglose de la cuota mes a mes, Interés pagado, capital, y cuota pura.
@@ -298,7 +299,7 @@ function scrollToNodo(nodo) {
 }
 
 // Esta función es la implementación de lo que seria un evento AJAX JSON
-function obtenerAPI() {
+async function obtenerAPI() {
   const URLGET = "/data/dolarAPI.json";
 
   $.getJSON(URLGET, function (respuestas, estado) {
@@ -379,4 +380,4 @@ function crearInteresCompuesto() {
 
 export { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, 
   validarInputs, animateHero, markErrorRemove, obtenerAPI, crearInteresCompuesto, getInputsCredito,
-  getInputsInteres, getInputsInteresReset }
+  getInputsInteres, getInputsInteresReset, scrollToNodo }

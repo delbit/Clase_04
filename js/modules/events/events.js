@@ -9,7 +9,7 @@
 // Import de lo necesario.
 import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, 
   markErrorRemove, obtenerAPI, crearInteresCompuesto, getInputsCredito, getInputsInteres,
-  getInputsInteresReset } from "./logic.js";
+  getInputsInteresReset, scrollToNodo } from "../app/logic.js";
 
 // variable global de la simulación.
 var simulacion; 
@@ -20,9 +20,10 @@ function listenerButton() {
   $("#form-simular").submit(simularCredito);    // listener del Simular.
   $("#detalle").click(simularCreditoDesglose);  // listener del detalle.
   $("#reset").click(resetPage);                 // listener del Reset.
-  $("#empezar").click(mostrarCalculador);       // listener empezar.
-  $("#ajax-test").click(ajaxEvent);             // Listener del ajax cotizaciones
-  $("#form-interes").submit(ejecutarInteres);   // Listener del Interes Compuesto
+  $("#empezar").click(mostrarCalculador);       // listener del Wrap de Simular.
+  $("#cotizaciones").click(ajaxEvent);             // Listener del wrap de cotizaciones
+  $("#interes-comp").click(interesCompuesto)         // Listener del wrap de Interés Compuesto
+  $("#form-interes").submit(ejecutarInteres);   // Listener de Crear Interes Compuesto
   $("#form-interes-reset").click(resetInteres); // Listener del Reset Interes Compuesto
 }
 
@@ -74,13 +75,16 @@ function resetPage(e) {
  */
 function mostrarCalculador(e) {
   e.preventDefault();
+  borrarDatosTabla("cal");
   let inputsCredito = getInputsCredito();
-  $(".ajax-test").slideUp();
+  $(".cotizaciones").slideUp();
+  $(".wrap-interes").slideUp();
   $(".calculador").slideDown();
   $(e.target).fadeOut("slow");
-  $("#ajax-test").fadeIn();
+  $("#cotizaciones").fadeIn();
+  $("#interes-comp").fadeIn();
+  scrollToNodo($(".calculador"));
   resetInput(inputsCredito);
-  borrarDatosTabla("cal");
   simulacion = undefined;
 }
 
@@ -94,12 +98,33 @@ function ajaxEvent(e){
   e.preventDefault();
   borrarDatosTabla("dolar");
   $(".calculador").slideUp();
-  $(".ajax-test").slideDown();
+  $(".wrap-interes").slideUp();
+  $(".cotizaciones").slideDown();
   $(e.target).fadeOut("slow");
   $("#empezar").fadeIn();
+  $("#interes-comp").fadeIn();
+  scrollToNodo($(".cotizaciones"));
+  
   setTimeout(function (){
     obtenerAPI();
   },400);
+}
+
+/**
+ * Funcion encargada de mostrar el wrap del la 
+ * calculadores de interes compuesto
+ */
+function interesCompuesto(e) {
+  e.preventDefault();
+  let inputsInteresReset = getInputsInteresReset();
+  $(".calculador").slideUp();
+  $(".cotizaciones").slideUp();
+  $(".wrap-interes").slideDown();
+  $(e.target).fadeOut("slow");
+  $("#empezar").fadeIn();
+  $("#cotizaciones").fadeIn();
+  scrollToNodo($(".wrap-interes"));
+  resetInput(inputsInteresReset);
 }
 
 function ejecutarInteres(e) {
