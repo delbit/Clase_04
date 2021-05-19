@@ -6,7 +6,7 @@
  * @resume: Events.js están todos los eventos necesarios para hacer funcionar los programas.
  * 
  * */
-// Import de lo necesario.
+// Import de la funciones necesaria.
 import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, 
   markErrorRemove, obtenerAPI, crearInteresCompuesto, getInputsCredito, getInputsInteres,
   getInputsInteresReset, scrollToNodo } from "../app/logic.js";
@@ -14,51 +14,63 @@ import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, bor
 // variable global de la simulación.
 var simulacion; 
 
-// Funciones principales.
 // Define los listener.
 function listenerButton() {
   $("#form-simular").submit(simularCredito);    // listener del Simular.
   $("#detalle").click(simularCreditoDesglose);  // listener del detalle.
   $("#reset").click(resetPage);                 // listener del Reset.
   $("#empezar").click(mostrarCalculador);       // listener del Wrap de Simular.
-  $("#cotizaciones").click(ajaxEvent);             // Listener del wrap de cotizaciones
-  $("#interes-comp").click(interesCompuesto)         // Listener del wrap de Interés Compuesto
+  $("#cotizaciones").click(ajaxEvent);          // Listener del wrap de cotizaciones
+  $("#interes-comp").click(interesCompuesto)    // Listener del wrap de Interés Compuesto
   $("#form-interes").submit(ejecutarInteres);   // Listener de Crear Interes Compuesto
   $("#form-interes-reset").click(resetInteres); // Listener del Reset Interes Compuesto
 }
 
+/** 
+ * Se encarga de crear una simulación y mostrar la version simple,
+ * Siempre crea una simulación al usarse
+ * @param {Object} e evento de jQuery
+ */
 function simularCredito(e) {
   e.preventDefault();
   let inputsCredito = getInputsCredito();
   markErrorRemove(inputsCredito);
   borrarDatosTabla("cal");
-  simulacion = crearSimulacion();               // Asignando una nueva simulación la Una Simulación.
+  simulacion = crearSimulacion();
   if (simulacion != undefined) {
-    visualizarSimulacion(simulacion);           // Visualizando la simulación simple.
+    visualizarSimulacion(simulacion);
     resetInput(inputsCredito);
   }
 }
 
+/** 
+ * Vizualizar una simulacion cuota a cuotas en detalle si esta existe
+ * de lo contrario se crea una nueva.
+ * @param {Object} e evento de jQuery
+ */
 function simularCreditoDesglose(e) {
   e.preventDefault();
   let inputsCredito = getInputsCredito();
-  // Verificando y removiendo los errores de los Inputs.
+  // Verificando y removiendo los errores de los Inputs y datos de tabla.
   markErrorRemove(inputsCredito);
   borrarDatosTabla("cal");
 
   if (simulacion != undefined) {
-    mostrarDesglose(simulacion);                // Visualizando el desglose.
+    mostrarDesglose(simulacion);
     resetInput(inputsCredito);
   } else {
     simulacion = crearSimulacion();
     if (simulacion != undefined) {
-      mostrarDesglose(simulacion);              // Visualizando el desglose.
+      mostrarDesglose(simulacion);
       resetInput(inputsCredito);
     }
   }
 }
 
-// Función encargada de limpiar la pantalla, borrando la tabla, los valores del los Input y la simulacion.
+/** 
+ * Limpia los datos del Input, tablas del nodo simulacion
+ * @param {Object} e evento de jQuery
+ */
 function resetPage(e) {
   e.preventDefault();
   let inputsCredito = getInputsCredito();
@@ -68,10 +80,12 @@ function resetPage(e) {
   simulacion = undefined;
 }
 
-// Función que muestra la calculadora de cuotas y oculta el botón de empezar
+
 /**
- * Básicamente lo que se hace en ocultar el botón del evento si este esta activo y mostrando el del otro evento
- * Limpia la tabla si esta estuviese con contenido e inicia la variable de la simulacion.
+ * Trigger que muestra la calculadora de simulacion de crédito y 
+ * oculta su trigger y muestra los demás de estar ocultos
+ * limpiar los datos si existes y centra la pantalla.
+ * @param {Object} e evento de jQuery
  */
 function mostrarCalculador(e) {
   e.preventDefault();
@@ -88,11 +102,11 @@ function mostrarCalculador(e) {
   simulacion = undefined;
 }
 
-// Función de ajax para cotizaciones de Dolares
 /**
- * Básicamente lo que se hace en ocultar el botón del evento si este esta activo y mostrando el del otro evento
- * Limpia la tabla de las cotizaciones si esta estuviese con datos, y se retrasa la muestra de las cotizaciones para
- * evitar la sobre posición de datos.
+ * Trigger que muestra las cotizaciones. 
+ * oculta su trigger y muestra los demás de estar ocultos
+ * limpiar los datos si existes y centra la pantalla.
+ * @param {Object} e evento de jQuery
  */
 function ajaxEvent(e){
   e.preventDefault();
@@ -111,8 +125,10 @@ function ajaxEvent(e){
 }
 
 /**
- * Funcion encargada de mostrar el wrap del la 
- * calculadores de interes compuesto
+ * Trigger que muestra la calculadora de interes compuesto. 
+ * oculta su trigger y muestra los demás de estar ocultos
+ * limpiar los datos si existes y centra la pantalla.
+ * @param {Object} e evento de jQuery
  */
 function interesCompuesto(e) {
   e.preventDefault();
@@ -127,6 +143,10 @@ function interesCompuesto(e) {
   resetInput(inputsInteresReset);
 }
 
+/**
+ * Trigger para la ejecución del interes compuesto. 
+ * @param {Object} e evento de jQuery
+ */
 function ejecutarInteres(e) {
   e.preventDefault();
   let inputsInteres = getInputsInteres();
@@ -134,6 +154,10 @@ function ejecutarInteres(e) {
   crearInteresCompuesto();
 }
 
+/**
+ * Trigger para reset de los inputs del interes compuesto. 
+ * @param {Object} e evento de jQuery
+ */
 function resetInteres(e) {
   e.preventDefault();
   let inputsInteres = getInputsInteres();

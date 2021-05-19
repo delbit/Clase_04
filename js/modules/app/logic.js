@@ -15,11 +15,19 @@ import { InteresComp } from "../class/interesComp.js"
 
 //***Funciones de Validaciones de entrada datos***
 
-// Valida el valor del Input.
-// Se verifican tres condiciones y cada una sirve para, -1 el numero es un NaN / 0 numero negativo / 1 correcto.
+/**
+ * Valida el valor del Input.
+ * Para tres condiciones posibles e informar el tipo de error del input.
+ * Partiendo de la hipótesis de una valor correcto.
+ * -1 el numero es un NaN / 0 numero negativo / 1 correcto.
+ * @param {object} objInput Selector jQuery input.
+ * @param {string} errorText Texto del error.
+ * @return {boolean}
+ */
 function validarInput(objInput,errorText) {
   let valueInput = parseFloat(objInput.val());
   let checker = true;
+
   if (isNaN(valueInput)) {
     markError(objInput, errorText, -1);
     checker = false;
@@ -28,9 +36,17 @@ function validarInput(objInput,errorText) {
     markError(objInput, errorText, 0);
     checker = false;
   }
-  return checker;         // Se parte de la hipótesis de que los input son validos.
+  return checker;
 }
 
+/**
+ * Verifica si un numero es múltiplo de otro e informar el error.
+ * Partiendo de la hipótesis de una valor correcto.
+ * @param {object} objInputMes Selector jQuery input.
+ * @param {object} objInputPeriodo Selector jQuery input.
+ * @param {string} errorText Texto del error.
+ * @return {boolean}
+ */
 function validarInputMultiplo(objInputMes,objInputPeriodo,errorText) {
   let valueInput = parseInt(objInputMes.val());
   let valuePeriodo = 12 / parseInt(objInputPeriodo.val());
@@ -44,7 +60,10 @@ function validarInputMultiplo(objInputMes,objInputPeriodo,errorText) {
   return checker;
 }
 
-// El Array de inputs es en el orden Capital, Interés, meses.
+/**
+ * Regresa los selectores jQuery Inputs.
+ * @return {Object[]} array en orden: Capital, Interés, meses.
+ */
 function getInputsCredito() {
   const inputs = [
     $("#capital"),
@@ -54,7 +73,10 @@ function getInputsCredito() {
   return inputs;
 }
 
-// El Array de inputs es en el orden Capital, Interés, meses, tipo periodo
+/**
+ * Regresa los selectores jQuery Inputs.
+ * @return {Object[]} array en orden: Capital, Interés, meses, tipo periodo.
+ */
 function getInputsInteres() {
   const inputs = [
     $("#form-interes-capital"),
@@ -65,6 +87,10 @@ function getInputsInteres() {
   return inputs;
 }
 
+/**
+ * Regresa los selectores jQuery Inputs.
+ * @return {Object[]} array en orden: Capital, Interés, meses, interes-ganado, capital-ganado.
+ */
 function getInputsInteresReset() {
   const inputs = [
     $("#form-interes-capital"),
@@ -76,32 +102,34 @@ function getInputsInteresReset() {
   return inputs;
 }
 
-/*
-* Función que se encarga de mostrar los errores de ingreso de los Input, también puede borrarlos.
- * -1 el numero es un NaN
- * 0 numero negativo
- * 1 correcto
+/** 
+ * Función que se encarga de mostrar los errores de ingreso de los Input, también puede borrarlos.
+ * -1 el numero es un NaN.
+ * 0 numero negativo.
  * default borrar los errores.
+ * @param {Object} objInput Selector jQuery input
+ * @param {string} errorText Texto del error
+ * @param {number} checker Numero error
  */
 function markError(objInput, errorText = "", checker = "remove") {
   let padreInput = (objInput.parents(".input-group"));
   let objIcon = padreInput.find(".input-group-text");       // Es el class que contiene el Icon del input.
   let objHelpBagde = padreInput.find(".help-bagde");        // Es el class contiene el div para el texto de error para el input.
 
-  // Agrega el texto correspondiente al error ocurrido dato no Valido.
   if (checker == -1) {
     setTimeout( function (){
       objHelpBagde.html(`Debe ingresar un ${errorText} válido`).fadeIn(100);
-      objIcon.addClass("error");        // agrega la class error al Icon del input.
+      objIcon.addClass("error");
     },100);
   }
+
   if (checker == 0) {
     setTimeout( function (){
       objHelpBagde.html(`Debe ingresar un ${errorText} mayor a 0`).fadeIn(100);
-      objIcon.addClass("error");        // agrega la class error al Icon del input.
+      objIcon.addClass("error");
     },100);
   }
-  // Esta sentencia remueve el error del input.
+
   if ((checker == "remove") && (objHelpBagde.html.length != 0)) {
     objIcon.removeClass("error");
     objHelpBagde.fadeOut(50);
@@ -111,47 +139,58 @@ function markError(objInput, errorText = "", checker = "remove") {
   }
 }
 
+/**
+ * Eliminar los errores de los Inputs.
+ * @param {Object[]} inputs Array de selectores jQuery inputs.
+ */
 function markErrorRemove(inputs) {
-  //const inputs = getInputsCredito();
   for (const input of inputs) {
-    markError($(input));          //Reutilizamos la función modificada para que por default sea remover error.
+    markError($(input));
   }
 }
 
-// esta funcion se encarga de verificar todos los Inputs del formulario.
+/**
+ * Retorna un boolean al
+ * Verificar los Inputs del un formulario.
+ * @param {Object[]} inputs Array de selectores jQuery inputs.
+ * @param {string[]} errorTexts Array de los errores.
+ * @return {boolean}
+ */
 function validarInputs(inputs, errorTexts) {
   let check = true;
-  //const inputs = getInputsCredito();     // El array devuelto es Capital, Interés, Meses, el errorText sigue ese orden.
-  /*const errorTexts = [
-    "<b>monto a solicitar</b>",
-    "<b>interés anual</b>",
-    "<b>número de cuotas</b>"
-  ];*/
-  // Validando cada Input.
   for (let index = 0; index < inputs.length; index++) {
     if (validarInput($(inputs[index]),errorTexts[index]) != true) {
       check = false;
     }
   }
-  return check;                 // Regresando validación, Si alguna Input es invalido se retorna una false. 
+  return check;
 }
 
-// Esta función se encarga de append en el nodo especificado.
+/**
+ * Función se encarga de agregar en el nodo especificado un HTML.
+ * @param {string} text codigo html o texto
+ * @param {Object} node Selector jQuery
+ */
 function domAddToNode(text, node) {
   node.append(text);
 }
 
-// Esta función se encarga limpiar los valores de los input y hacer foco en el primer input.
-// Se usa al inicio del programa y cuando se ejecuta el form.
+/**
+ * Se encarga limpiar los valores de los input y hacer foco en el primer input
+ * @param {Object[]} inputs Array de selectores jQuery inputs
+ */
 function resetInput(inputs) {
-  //const inputs = getInputsCredito();
   for (const input of inputs) {
     $(input).val("");
   }
-  $(inputs[0]).focus(); // foco siempre al primer input.
+  $(inputs[0]).focus();
 }
 
-// Esta función crea un objeto con los datos de los input y devuelve el objeto creado, si los Input son correctos.
+/**
+ * Crea un objeto tipo Cuotas con los datos de los input.
+ * Valida los input y enviá su respectivo texto de error.
+ * @return {Object} simulacion class Cuotas
+ */
 function crearSimulacion() {
   let inputsCredito = getInputsCredito();
   const errorTexts = [
@@ -168,12 +207,15 @@ function crearSimulacion() {
   }
 }
 
-// Esta función va a mostrar la información del crédito de manera rápida.
+/**
+ * Va a mostrar la información del crédito de forma sencilla.
+ * @param {Object} simulacion Tipo Cuota
+ */
 function visualizarSimulacion(simulacion) {
+  // El array devuelto el selector jQuery Header,selector jQuery de datos.
   let tablas = cualTabla("cal");
-  let tablaHeader = tablas[0]; // EL array devuelto siempre debe traer el Header de primero, luego la de datos
+  let tablaHeader = tablas[0];
   let tablaRow  = tablas[1];
-  // El texto del encabezado de la tabla.
   let textsHeader =`
   <tr>
     <th class="hidden" scope="col"># Cuotas</th>
@@ -181,8 +223,6 @@ function visualizarSimulacion(simulacion) {
     <th class="hidden" scope="col">Interés Anual</th>
     <th class="hidden" scope="col">Cuota Promedio</th>
   </tr>`;
-
-  // El texto de la fila de la tabla.
   let textsRow =`
   <tr>
     <td class="hidden" scope="row"><strong>${simulacion.leerMeses}</strong></td>
@@ -191,25 +231,28 @@ function visualizarSimulacion(simulacion) {
     <td class="hidden">${simulacion.leerCuota.toFixed(2)}</td>
   </tr>`;
 
-  // Debido a que se elimina codigo, es necesario un retraso al momento de volver a escribir los datos nuevos.
+  // Es necesario un retraso al momento de volver a escribir los datos nuevos.
+  // Debido a que se elimina texto.
   setTimeout( function (){
     domAddToNode(textsHeader, tablaHeader);
     domAddToNode(textsRow, tablaRow);
-    tableAnimate(cualTabla("cal")); // Animación de la tabla.
-  },200);                           // El valor es el numero del retraso de la animación.
+    tableAnimate(cualTabla("cal"));
+  },200);
   scrollToNodo(tablaHeader);
 }
 
-// Esta función va a mostrar el desglose de la cuota mes a mes, Interés pagado, capital, y cuota pura.
+/**
+ * Va a mostrar el desglose de la cuota mes a mes, Interés pagado, capital, y cuota pura
+ * @param {Object} simulacion Tipo Cuota
+ */
 function mostrarDesglose(simulacion) {
+  // El array devuelto el selector jQuery Header,selector jQuery de datos.
   let tablas = cualTabla("cal");
-  let tablaHeader = tablas[0]; // EL array devuelto siempre debe traer el Header de primero, luego la de datos
+  let tablaHeader = tablas[0];
   let tablaRow  = tablas[1];
 
   // Recuperando el Arreglo del desglose de las cuotas.
   let desgloseCuotasArray = simulacion.leerDesgloseCuotas;
-
-  // Texto del encabezado de la tabla.
   let textHeader = `
   <tr>
     <th class="hidden text-truncate" scope="col">Cuota</th>
@@ -219,11 +262,9 @@ function mostrarDesglose(simulacion) {
     <th class="hidden text-truncate" scope="col">Cuota</th>
   </tr>`;
 
-  // Debido a que se elimina codigo de los div, es necesario un retraso en el momento de volver a escribir los datos nuevos.
   setTimeout( function (){
-    domAddToNode(textHeader, tablaHeader);                  // Se envia el encabezado de la tabla.
+    domAddToNode(textHeader, tablaHeader);
     for (const desgloseCuota of desgloseCuotasArray) {
-      // Texto de cada fila de la tabla.
       let textRow = `
       <tr>
         <td class="hidden" scope="row"><strong>${desgloseCuota.leerMes}</strong></td>
@@ -233,14 +274,19 @@ function mostrarDesglose(simulacion) {
         <td class="hidden">${simulacion.leerCuota.toFixed(2)}</td>
       </tr>`;
 
-      domAddToNode(textRow, tablaRow);                      // Se enviá el texto de fila a la tabla.
+      domAddToNode(textRow, tablaRow);
     }
-    tableAnimate(tablas);                                   // Animación de las filas de la tabla calculadora
-  },200);                                                   // El valor es el numero del retraso de la animación.
-
-  scrollToNodo(tablaHeader);                                // Animación para central la tabla.
+    tableAnimate(tablas);
+  },200);
+  scrollToNodo(tablaHeader);
 }
 
+/**
+ * Retorna un array de selectores jQuery
+ * Tabla a usar, en el orden header y datos
+ * @param {string} pCual "cal" Simulador / "dolar" Cotizacion
+ * @return {Object[]}
+ */
 function cualTabla(pCual) {
   if(pCual == "cal") {
     return ([$("#table-header"),$("#table-datos")])
@@ -251,17 +297,19 @@ function cualTabla(pCual) {
   }
 }
 
-// Esta Función se encarga de eliminar los datos de la tabla al reiniciar.
+/**
+ * Borrado de los datos de una tabla, se ejecuta si esta tiene hijos
+ * @param  {string} pCual "cal" Simulador / "dolar" Cotizacion
+ */
 function borrarDatosTabla(pCual) {
   let tablas = cualTabla(pCual);
-  let tablaHeader = tablas[0];            // EL array devuelto siempre debe traer el Header de primero, luego la de datos.
+  let tablaHeader = tablas[0];
   let tablaRow  = tablas[1];
 
-  // Se consulta si existen datos en la tabla, consultando si tabla-datos contiene algún hijo.
   if (tablaRow.children().length != 0) {
     tableAnimate(tablas,"H");
 
-    // Esta llamada lo que hace es retrasar el borrado de la tabla para que la animación se pueda ver.
+    // Retrasor el borrado de la tabla para que la animación se aprecie.
     setTimeout( function (){
       tablaRow.empty();
       tablaHeader.empty();
@@ -270,6 +318,11 @@ function borrarDatosTabla(pCual) {
 }
 
 // Funcion para mostrar u ocultar los datos S = Show (mostrar) / H = Hidden (ocultar).
+/**
+ * Animacion para las celdas de una tabla
+ * @param  {object} tablas Array de Selectores jQuery
+ * @param  {string} evento S = Show (mostrar) default / H = Hidden (ocultar)
+ */
 function tableAnimate(tablas, evento = "S") {
   let tablaHeader = tablas[0].find("th");
   let tablaRow = tablas[1].find("td");
@@ -283,7 +336,9 @@ function tableAnimate(tablas, evento = "S") {
   }
 }
 
-// Esta función anima todo el texto del Hero
+/**
+ * Animaciones del Hero
+ */
 function animateHero() {
   $(".hero-title").fadeIn(250, function () {
     $(".hero-p").slideDown(250);
@@ -291,14 +346,20 @@ function animateHero() {
   });
 }
 
-// Esta función centra a un nodo la pantalla.
+
+/**
+ * Centra un nodo en la pantalla, con animacion de scroll
+ * @param  {object} nodo selector jQuery
+ */
 function scrollToNodo(nodo) {
   $('html, body').animate({
     scrollTop: nodo.offset().top
   }, 1500);
 }
 
-// Esta función es la implementación de lo que seria un evento AJAX JSON
+/**
+ * Esta función es la implementación de lo que seria un evento AJAX JSON
+ */
 async function obtenerAPI() {
   const URLGET = "/data/dolarAPI.json";
 
@@ -323,8 +384,13 @@ async function obtenerAPI() {
   });
 }
 
-// Esta es la implementación de un Ajax con estructura diferente, obtiene los datos desde un objeto el cual tiene 
-// la Api de cotización y la va mostrando en pantalla.
+/**
+ * Esta es la implementación de un Ajax con estructura diferente, 
+ * obtiene los datos desde un objeto el cual tiene 
+ * la Api de cotización y la va mostrando en pantalla.
+ * @param  {string}
+ * @return  {boolean}
+ */
 function obtenerCotizaciones(objJson) {
   $.ajax({
     dataType: objJson.metodo,
@@ -343,6 +409,12 @@ function obtenerCotizaciones(objJson) {
   });
 }
 
+/**
+ * Retorna la Verificación de los Input para el Interes Compuesto
+ * contiene los mensaje si existen errores.
+ * @param  {object} inputs Selectores jQuery inputs
+ * @return  {boolean}
+ */
 function validarInputInteresCompuesto(inputs) {
   let checker = false;
   const errorTexts = [
@@ -350,7 +422,7 @@ function validarInputInteresCompuesto(inputs) {
     "<b>interés anual</b>",
     "<b>periodo de meses</b>"
   ];
-  const errorTextsSelector = "<b>Frecuencia de abono</b>"
+  const errorTextsSelector = "<b>periodo de abono</b>"
 
   let validator1 = validarInputs(inputs, errorTexts);
   let validator2 = validarInputMultiplo(inputs[2],inputs[3], errorTextsSelector);
@@ -361,6 +433,9 @@ function validarInputInteresCompuesto(inputs) {
   return checker;
 }
 
+/**
+ * Creacion de un interes compuesto y su respectiva visualización de resultado
+ */
 function crearInteresCompuesto() {
   let inputsInteres = getInputsInteres();
   scrollToNodo($("#form-interes"));
