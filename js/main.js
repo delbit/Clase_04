@@ -11,9 +11,9 @@
  * */
 
 // Funciones importadas
-import { builderPage } from "./modules/pages/builderPage.js";
-import { animateHero } from "./modules/app/logic.js";
-import { listenerButton } from "./modules/events/events.js";
+import { builderPage } from "./Clase_04/js/modules/pages/builderPage.js";
+import { animateHero } from "./Clase_04/js/modules/app/logic.js";
+import { listenerButton } from "./Clase_04/js/modules/events/events.js";
 
 //Insertando al DOM los HTML de los distintos modulos del programa
 builderPage();
