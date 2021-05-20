@@ -13,6 +13,9 @@
   background-color: #f2dede;
   border-color: #a94442;
 }
+f#orm-simular .help {
+  min-height: 1.5rem;
+}
 
 #form-interes .help {
   min-height: 1.5rem;
