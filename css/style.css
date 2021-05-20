@@ -36,12 +36,12 @@ body .hidden {
 
 .hero-title {
   margin-top: 25%;
-  text-align: center; 
+  text-align: center;
 }
 
 .hero-title-inside {
   border-radius: 5px;
-  background-color: #0069D9;
+  background-color: #0069d9;
   margin-top: 10px;
   margin-bottom: 10px;
   padding-left: 4px;
@@ -53,10 +53,12 @@ body .hidden {
   margin-top: 25px;
 }
 
-.wrap-title-inside{
+.wrap-title-inside {
   border-radius: 5px;
-  background-color: #0069D9;
+  background-color: #0069d9;
   color: whitesmoke;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -86,8 +88,8 @@ body .hidden {
 }
 
 .img-box {
-  max-width:100%;
-  max-height:15rem;
+  max-width: 100%;
+  max-height: 15rem;
   width: 100%;
   height: auto;
   object-fit: cover;
@@ -96,4 +98,25 @@ body .hidden {
 
 .table {
   table-layout: fixed;
+}
+
+.preloader {
+  margin: auto;
+  width: 70px;
+  height: 70px;
+  border: 10px solid #eee;
+  border-top: 10px solid #0069d9;
+  border-radius: 50%;
+  animation-name: girar;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes girar {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

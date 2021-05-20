@@ -317,7 +317,6 @@ function borrarDatosTabla(pCual) {
   }
 }
 
-// Funcion para mostrar u ocultar los datos S = Show (mostrar) / H = Hidden (ocultar).
 /**
  * Animacion para las celdas de una tabla
  * @param  {object} tablas Array de Selectores jQuery
@@ -358,55 +357,72 @@ function scrollToNodo(nodo) {
 }
 
 /**
- * Esta función es la implementación de lo que seria un evento AJAX JSON
+ * Agrega el encabezado a la tabla de cotizaciones
  */
-async function obtenerAPI() {
-  const URLGET = "/data/dolarAPI.json";
-
-  $.getJSON(URLGET, function (respuestas, estado) {
-    let headerAjax = $("#table-header-ajax")
-    if(estado === "success"){
-      let textHeader =`
-      <tr>
-        <th scope="col">Dólar</th>
-        <th scope="col">Fecha</th>
-        <th scope="col">Compra</th>
-        <th scope="col">Venta</th>
-      </tr>
-      `;
-      domAddToNode(textHeader, headerAjax);
-
-      for (const objJson of respuestas) {
-        obtenerCotizaciones(objJson);
-      }
-      scrollToNodo(headerAjax);
-    }
-  });
+function mostrarHeaderCotizacion() {
+  let headerAjax = $("#table-header-ajax");
+  let textHeader =`
+  <tr>
+    <th class="hidden" scope="col">Dólar</th>
+    <th class="hidden" scope="col">Fecha</th>
+    <th class="hidden" scope="col">Compra</th>
+    <th class="hidden" scope="col">Venta</th>
+  </tr>
+  `;
+  domAddToNode(textHeader, headerAjax);
 }
 
 /**
- * Esta es la implementación de un Ajax con estructura diferente, 
- * obtiene los datos desde un objeto el cual tiene 
- * la Api de cotización y la va mostrando en pantalla.
- * @param  {string}
- * @return  {boolean}
+ * Agrega el una fila a la tabla de cotizaciones
+ * @param {string} descripcion El nombre de la cotización
+ * @param {object} response la respuesta de la api con la cotización
  */
-function obtenerCotizaciones(objJson) {
-  $.ajax({
-    dataType: objJson.metodo,
-    url: objJson.url,
-    success:( (response) => {
-      let textRow = `
-      <tr>
-        <td scope="row"><strong>${objJson.descripcion}</strong></td>
-        <td>${response.fecha.slice(0, 10)}</td>
-        <td>${response.compra}</td>
-        <td>${response.venta}</td>
-      </tr>
-      `;
-      domAddToNode(textRow, $("#table-datos-ajax"));
-    })
+function mostrarRowCotizaciones(descripcion,response) {
+  let textRow = `
+    <tr>
+      <td class="hidden" scope="row"><strong>${descripcion}</strong></td>
+      <td class="hidden">${response.fecha.slice(0, 10)}</td>
+      <td class="hidden">${response.compra}</td>
+      <td class="hidden">${response.venta}</td>
+    </tr>
+    `;
+  domAddToNode(textRow, $("#table-datos-ajax"));
+}
+
+/**
+ * Regresa la respuesta de una llamada AJAX.
+ * @param {string} ajaxurl url de consulta.
+ * @param {object} type el método de consulta de ajax.
+ */
+function getDataJson(ajaxurl,type) { 
+  return $.ajax({
+    url: ajaxurl,
+    type: type,
   });
+};
+
+/**
+ * Llamados de la cotización de manera asíncrona con await para que la
+ * cotizaciones se muestra en en el mismo orden.
+ * muestra una animación mientras se completa la carga
+ */
+async function obtenerAPI() {
+  $(".animate").fadeIn("fast");
+  const URLGET = "/data/dolarAPI.json";
+  const resApis = await getDataJson(URLGET,"get");
+  mostrarHeaderCotizacion();
+
+  for (const resApi of resApis) {
+    try {
+      const response = await getDataJson(resApi.url,"get")
+      mostrarRowCotizaciones(resApi.descripcion,response)
+    } catch(err) {
+      console.log(err);
+    }
+  }
+  $(".animate").fadeOut("fast");
+  scrollToNodo($("#table-header-ajax"));
+  tableAnimate(cualTabla("dolar"));
 }
 
 /**
@@ -434,7 +450,7 @@ function validarInputInteresCompuesto(inputs) {
 }
 
 /**
- * Creacion de un interes compuesto y su respectiva visualización de resultado
+ * Creación de un interes compuesto y su respectiva visualización de resultado
  */
 function crearInteresCompuesto() {
   let inputsInteres = getInputsInteres();

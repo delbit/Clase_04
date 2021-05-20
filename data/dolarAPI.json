@@ -1,26 +1,26 @@
 ﻿[
     {
-        "metodo": "JSON",
+        "metodo": "GET",
         "url": "https://apiarg.herokuapp.com/api/dolaroficial",
         "descripcion": "Oficial"
     },
     {
-        "metodo": "JSON",
-        "url": "https://apiarg.herokuapp.com/api/dolarblue",
-        "descripcion": "Blue"
-    },
-    {
-        "metodo": "JSON",
-        "url": "https://apiarg.herokuapp.com/api/contadoliqui",
-        "descripcion": "Contado Liqui"
-    },
-    {
-        "metodo": "JSON",
+        "metodo": "GET",
         "url": "https://apiarg.herokuapp.com/api/dolarturista",
         "descripcion": "Turista"
     },
     {
-        "metodo": "JSON",
+        "metodo": "GET",
+        "url": "https://apiarg.herokuapp.com/api/dolarblue",
+        "descripcion": "Blue"
+    },
+    {
+        "metodo": "GET",
+        "url": "https://apiarg.herokuapp.com/api/contadoliqui",
+        "descripcion": "Contado Liqui"
+    },
+    {
+        "metodo": "GET",
         "url": "https://apiarg.herokuapp.com/api/dolarbolsa",
         "descripcion": "Bolsa"
     }
