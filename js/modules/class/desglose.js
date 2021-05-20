@@ -1,12 +1,11 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 22/04/2021
- * @desafió: 2da entrega Proyecto
- * @resume:
- * Clase complementaria para el detalle de la cuota simulador de Crédito  francés.
- * Los cálculos están en la clase de cuotas quien se encarga de crear cada elemento necesario
+ * @date: 20/05/2021
+ * @desafió: Proyecto Final
+ * @resume: Definición del Objeto para hacer el desglose de la cuota del sistema francés.
  * */
+
 export class Desglose {
   constructor(capitalPendiente, amortizado, interesMes, mes) {
     this.capitalPendiente = capitalPendiente;
