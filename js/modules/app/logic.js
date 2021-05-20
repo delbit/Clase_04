@@ -412,7 +412,7 @@ function getDataJson(ajaxurl,type) {
  */
 async function obtenerAPI() {
   $(".animate").fadeIn("fast");
-  const URLGET = "/data/dolarAPI.json";
+  const URLGET = "/Clase_04/data/dolarAPI.json";
   const resApis = await getDataJson(URLGET,"get");
   mostrarHeaderCotizacion();
 
