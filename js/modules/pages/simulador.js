@@ -1,3 +1,11 @@
+/*
+ * Script
+ * @author: David Eloy Lucena Rey
+ * @date: 20/05/2021
+ * @desafió: Proyecto Final
+ * @resume: Modulo HTML perteneciente a la calculadora del sistema francés para cuotas.
+ * */
+
 export const pageSimulador = `
 <div class="calculador hidden">
 

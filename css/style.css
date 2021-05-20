@@ -1,3 +1,13 @@
+/*
+ * CSS
+ * @author: David Eloy Lucena Rey
+ * @date: 20/05/2021
+ * @desafió: Proyecto Final
+ * @resume:
+ * Propiedad de Animación para la carga del AJAX
+ * Las propiedades CSS necesarias para hacer la pagina consiente con un mismo formato
+ * */
+
 .input-group .error {
   color: #a94442;
   background-color: #f2dede;

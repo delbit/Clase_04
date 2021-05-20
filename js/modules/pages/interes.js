@@ -1,3 +1,11 @@
+/*
+ * Script
+ * @author: David Eloy Lucena Rey
+ * @date: 20/05/2021
+ * @desafió: Proyecto Final
+ * @resume: Modulo HTML perteneciente al calculo del interés compuesto.
+ * */
+
 export const pageInteres = `
 <!--DIV donde se muestre el Interés compuesto-->
 <div class="wrap-interes hidden">

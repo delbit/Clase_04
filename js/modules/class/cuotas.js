@@ -1,8 +1,8 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 08/05/2021
- * @desafió: 3era entrega Proyecto
+ * @date: 20/05/2021
+ * @desafió: Proyecto Final
  * @resume:
  * Clase a usar en el simulador de Crédito  francés.
  * Se modifico el constructor para hacerlo consistente con el Orden de los Input del HTML
@@ -12,7 +12,7 @@
 
 // Import de la class
 import { Desglose } from "./desglose.js";
-// Class
+
 export class Cuotas {
   constructor(capital, interes, meses) {
     this.capital = capital;
@@ -68,11 +68,13 @@ export class Cuotas {
     return this.desgloseCuotas;
   }
 
-  // Funciones propias para el calculo de la cuota
+    /**
+   * Se encarga de actualizar el interes Mensual, el factor de calculo y la cuota
+   */
   actualizarCuota () {
-    this.interesMensual = this.interes / 1200; // actualiza el interes mensual
-    this.factorFunc(); // actualiza el factor
-    this.cuotaFunc(); // actualiza la cuota mensual
+    this.interesMensual = this.interes / 1200;
+    this.factorFunc();
+    this.cuotaFunc();
   }
 
   factorFunc() {

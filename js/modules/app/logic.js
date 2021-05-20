@@ -1,10 +1,14 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 08/05/2021
- * @desafió: 3er Entrega
+ * @date: 20/05/2021
+ * @desafió: Proyecto Final
  * @resume: La lógica del programa de Simulación.
- * se modificaron alguna funciones para que puedan trabajar con diferente valores.
+ * Refactoring de la funcion Ajax ahora puede hacer uso del await para preservar el orden de los llamados.
+ * Animación de espera para el Ajax, de esta manera se da la sensación que se estan realizando tareas
+ * Se modificaron alguna funciones para que puedan trabajar con diferente valores.
+ * Mejora de los comentarios en la funciones.
+ * Validaciones del nuevo modulo de interés compuesto
  * Se crea la lógica de obtener mediante un getJson las url de un API de cotizaciones del dolar
  * También la lógica que hace uso de esas API para representar las cotizaciones mas relevantes.
  * */

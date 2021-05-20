@@ -1,3 +1,12 @@
+/*
+ * Script
+ * @author: David Eloy Lucena Rey
+ * @date: 20/05/2021
+ * @desafió: Proyecto Final
+ * @resume: Para realizar la pagina lo mas similar a SPA se dividieron los distintas
+ * ventanas de HTML individuales e insertando su HTML directo al DOM.
+ * */
+
 // Import de la paginas necesarias.
 import { pageSimulador } from "./simulador.js";
 import { pageCotizacion } from "./cotizacion.js";

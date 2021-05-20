@@ -1,3 +1,11 @@
+/*
+ * Script
+ * @author: David Eloy Lucena Rey
+ * @date: 20/05/2021
+ * @desafió: Proyecto Final
+ * @resume: Modulo HTML perteneciente a la cotización del dolar.
+ * */
+
 export const pageCotizacion = `
 <!--DIV donde se muestre de AJAX-->
 <div class="container cotizaciones hidden">

@@ -1,3 +1,11 @@
+/*
+ * Script
+ * @author: David Eloy Lucena Rey
+ * @date: 20/05/2021
+ * @desafió: Proyecto Final
+ * @resume: Definición del Objeto para interés compuesto.
+ * */
+
 export class InteresComp {
   constructor(capital, interes, meses, tipoPeriodo) {
     this.capital = capital;

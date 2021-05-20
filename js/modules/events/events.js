@@ -1,11 +1,13 @@
 /*
  * Script
  * @author: David Eloy Lucena Rey
- * @date: 08/05/2021
- * @desafió: 3era Entrega
+ * @date: 20/05/2021
+ * @desafió: Proyecto Final
  * @resume: Events.js están todos los eventos necesarios para hacer funcionar los programas.
- * 
+ * Mejoras en los Comentarios de las funciones
+ * cada listener tiene la lógica necesaria para ejecutar su parte de codigo
  * */
+
 // Import de la funciones necesaria.
 import { mostrarDesglose, resetInput, crearSimulacion, visualizarSimulacion, borrarDatosTabla, 
   markErrorRemove, obtenerAPI, crearInteresCompuesto, getInputsCredito, getInputsInteres,
@@ -79,7 +81,6 @@ function resetPage(e) {
   resetInput(inputsCredito);
   simulacion = undefined;
 }
-
 
 /**
  * Trigger que muestra la calculadora de simulacion de crédito y 
