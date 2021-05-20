@@ -18,19 +18,20 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
     />
-    <title>Portal Financiero</title>
+    <title>Proyecto Final</title>
   </head>
   <body>
     <!--Hero de la pagina-->
     <div class="container-fluid hero">
       <div class="row">
-        <!--Información de la pagina para usar la calculadora-->
+        <!--Información de cada modulo de la pagina-->
         <div class="col-12 col-md-6 justify-content-md-center">
           <h1 class="hero-title hidden"><span class="hero-title-inside">Bienvenidos al Portal de Finanzas</span></h1>
 
           <p class="hero-p text-center hidden">
-            Simulador usando el sistema francés para (Crédito).<br />
-            Conocer la cotización del actual del (Dólar).
+            Simulador de cuotas con sistema francés para (Crédito).<br />
+            Conocer la cotización actual del (Dólar).<br />
+            Calculador para plazo fijo, (Interés) compuesto.
           </p>
           <div class="row text-center">
             <div class="col"></div>
@@ -38,7 +39,10 @@
               <button type="button" id="empezar" class="btn btn-primary hidden">Crédito</button>
             </div>
             <div class="col-3 col-lg-2">
-              <button type="button" id="ajax-test" class="btn btn-primary hidden">Dolar</button>
+              <button type="button" id="cotizaciones" class="btn btn-primary hidden">Dólar</button>
+            </div>
+            <div class="col-3 col-lg-2">
+              <button type="button" id="interes-comp" class="btn btn-primary hidden">Interés</button>
             </div>
             <div class="col"></div>
           </div>
@@ -46,83 +50,10 @@
 
       </div>
     </div>
+    <!--Div donde insertan los modulos de la pagina-->
+    <div id="wrapper"></div>
 
-    <div class="calculador hidden">
-      <!--Es el formulario donde se solicitan los datos-->
-      <form id="form-simular">
-        <div class="container mt-3">
-          <div class="row">
-            <div class="col-4">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">$</span>
-                </div>
-                <input type="number" class="form-control" id="capital" placeholder="Monto a Solicitar" aria-label="Monto">
-                <div class="help w-100"><div class="help-bagde w-100"></div></div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">%</span>
-                </div>
-                <input type="number" class="form-control" id="interes" placeholder="Interés Anual" aria-label="Interés">
-                <div class="help-bagde w-100" style="display: none"></div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">#</span>
-                </div>
-                <input type="number" class="form-control" id="meses" placeholder="Cantidad de Cuotas" aria-label="Meses">
-                <div class="help-bagde w-100"></div>
-              </div>
-            </div>
-          </div>
-          <div class="row text-center">
-            <div class="col-md"></div>
-            <div class="col-4 col-md-3 col-lg-2 text-center">
-              <button type="submit" class="btn btn-success">Simular Crédito</button>
-            </div>
-            <div class="col-4 col-md-3 col-lg-2 text-center">
-              <button type="button" id="detalle" class="btn btn-primary">Mostrar Detalle</button>
-            </div>
-            <div class="col-4 col-md-3 col-lg-2 text-center">
-              <button type="button" id="reset" class="btn btn-info">Limpiar Datos</button>
-            </div>
-            <div class="col-md"></div>
-          </div>
-        </div>
-      </form>
-
-      <!--Esta es la tabla que recibe los datos de la simulación-->
-      <div class="container mt-3">
-        <div class="row">
-          <table class="table">
-            <thead id="table-header">
-            </thead>
-            <tbody id="table-datos">
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-
-    <!--DIV donde se muestre el ejemplo de AJAX-->
-    <div class="ajax-test hidden">
-      <div class="container mt-5 text-center">
-        <table class="table table-hover">
-          <thead class="thead-light" id="table-header-ajax">
-          </thead>
-          <tbody id="table-datos-ajax">
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <script src="/js/modules/jquery-3.6.0.js"></script>
+    <script src="/js/modules/libraries/jquery-3.6.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
     <script type="module" src="/js/main.js"></script>
